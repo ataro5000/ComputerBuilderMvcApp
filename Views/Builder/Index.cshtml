@@ -1,0 +1,91 @@
+@*
+    This view presents the computer builder interface to the user.
+    It allows users to select components for different categories (CPU, Motherboard, RAM, etc.)
+    from dropdown lists populated with available components.
+    The view displays the name and price of each component.
+    It dynamically updates a summary of the selected components and the total price of the build.
+    Users can submit their configuration to add it to the shopping cart or cancel the build.
+    Error messages from the backend (e.g., if no components are selected) are displayed at the top.
+*@
+@model ComputerBuilderMvcApp.Models.ComputerBuilder
+
+@{
+    ViewData["Title"] = "Build Your PC";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Select components for your custom PC build.</p>
+<hr />
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form asp-controller="Builder" asp-action="BuildAndAddToCart" method="post">
+    <div class="builder-form">
+        @foreach (var category in Model.ComponentCategories)
+        {
+            <div class="form-group">
+                <label for="@($"select-{category}")" class="form-label"><strong>@category:</strong></label>
+                @if (Model.AvailableComponentsByType.TryGetValue(category, out var componentsForCategory) && componentsForCategory.Any())
+                {
+                    <select asp-for="SelectedComponentIds[category]" id="@($"select-{category}")" class="form-select">
+                        <option value="">-- Select @category --</option>
+                        @foreach (var component in componentsForCategory)
+                        {
+                            int? currentSelectionId = Model.SelectedComponentIds.ContainsKey(category) ? Model.SelectedComponentIds[category] : null;
+                            bool isSelected = currentSelectionId.HasValue && currentSelectionId.Value == component.Id;
+
+                            <option value="@component.Id" data-price="@((component.PriceCents / 100.0m).ToString("F2"))" selected="@isSelected">
+                                @component.Name (@((component.PriceCents / 100.0m).ToString("C"))) 
+                            </option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <p class="text-muted">No @category options available.</p>
+                    <input type="hidden" asp-for="SelectedComponentIds[category]" value="" />
+                }
+            </div>
+        }
+        <div class="builder-summary">
+            <h4>Build Summary</h4>
+            <hr />
+            <dl>
+                @foreach (var categoryKey in Model.ComponentCategories) 
+                {
+                    <dt>@categoryKey:</dt>
+                    <dd id="summary-@categoryKey">
+                        @{
+                            int? selectedId = Model.SelectedComponentIds.ContainsKey(categoryKey) ? Model.SelectedComponentIds[categoryKey] : (int?)null;
+                            if (selectedId.HasValue && Model.AvailableComponentsByType.TryGetValue(categoryKey, out var componentsForSummary) && componentsForSummary != null)
+                            {
+                                var selectedComponent = componentsForSummary.FirstOrDefault(c => c.Id == selectedId);
+                                if (selectedComponent != null)
+                                {
+                                    @selectedComponent.Name
+                                }
+                                else
+                                {
+                                    <text>None</text>
+                                }
+                            }
+                            else
+                            {
+                                <text>None</text>
+                            }
+                        }
+                    </dd>
+                }
+            </dl>
+            <hr />
+            <h4>Total Price: <span id="totalPriceDisplay">@Model.TotalPrice.ToString("C")</span></h4>
+            <div class="builder-buttons">
+                <button type="submit" class="btn btn-success">Add Configuration to Cart</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel Build</a>
+            </div>
+        </div>
+    </div>
+</form>

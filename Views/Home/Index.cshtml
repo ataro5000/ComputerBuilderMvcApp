@@ -1,0 +1,68 @@
+@*
+    This view serves as the home page of the application.
+    It displays a welcome message and a selection of featured computer components.
+    Each featured component is presented in a card format, showing its image, name, price,
+    a brief specification, and its average customer rating.
+    Users can click on a component to view its details or add it directly to the shopping cart.
+*@
+@model List<ComputerBuilderMvcApp.Models.Component>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Computer Builder</h1>
+    <p>Your one-stop shop for PC components and custom builds!</p>
+</div>
+
+<hr />
+
+@if (Model != null && Model.Any())
+{
+    <h2>Featured Components</h2>
+    <div role="main" class="products-grid">
+        @foreach (var component in Model)
+        {
+            <div class="product-container">
+                <a asp-controller="Components" asp-action="Details" asp-route-id="@component.Id" class="product-link">
+                    <div class="product-image-container">
+                        <img class="product-image" src="@component.Image" alt="@component.Name">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name limit-text-to-2-lines product-link">
+                            @component.Name
+                        </div>
+                        <div class="product-price">
+                            Price: $@(component.PriceCents / 100m)
+                        </div>
+                        <p class="product-spec">@component.Spec</p>
+                        <div class="product-rating">
+                            @if (component.ReviewCount > 0)
+                            {
+                                <img src="~/images/ratings/@component.RatingImageName" alt="Rating @component.AverageRating.ToString("0") out of 5" class="rating-image" />
+                                <span class="review-count ms-1">(@component.ReviewCount)</span>
+                            }
+                            else
+                            {
+                                <img src="~/images/ratings/rating-0.png" alt="No reviews" class="rating-image" />
+                                    <span class="review-count no-reviews ms-1">No reviews</span>
+                            }
+                        </div>
+                    </div>
+                </a>
+                <div class="added-to-cart">
+                    <img src="images/icons/checkmark.png">
+                    Added
+                </div>
+                <div class="product-actions">
+                    <form asp-controller="Cart" asp-action="AddSingleComponentToCart" method="post" style="display:inline;">
+                        <input type="hidden" name="componentId" value="@component.Id" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="submit" class="add-to-cart-button">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+
+        }
+    </div>
+}

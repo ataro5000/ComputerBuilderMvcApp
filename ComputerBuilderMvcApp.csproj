@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" /> <!-- Consider if a 9.x version is available and compatible -->
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.6" /> <!-- Consider if a 9.x version is available and compatible -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" /> <!-- This seems to be your runtime version -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6"> <!-- Update this -->
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" /> <!-- This is likely for .NET 9, check for latest patch -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

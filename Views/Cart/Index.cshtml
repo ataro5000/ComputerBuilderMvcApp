@@ -1,0 +1,92 @@
+@*
+    This view displays the contents of the user's shopping cart.
+    It lists each item with its image, name, quantity, unit price, taxes, and subtotal.
+    Users can remove items from the cart.
+    The view shows the total price of all items in the cart.
+    If the cart is empty, it provides links to start building a PC or browse components.
+    Otherwise, it offers options to "Proceed to Checkout" or "Continue Shopping".
+    It also displays success or error messages passed via TempData.
+*@
+@model ComputerBuilderMvcApp.Models.Cart
+
+@{
+    ViewData["Title"] = "Your Shopping Cart";
+}
+
+<h1 class="single-item-title">@ViewData["Title"]</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show single-item-details" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show single-item-details" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (Model != null && Model.Items.Any())
+{
+    <div class="single-item-container">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover cart-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Taxes</th>
+                        <th>Subtotal</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="product-image-container">
+                                <img src="@item.CartItemImage" alt="@item.CartItemName" class="product-image" />
+                            </td>
+                            <td class="product-name">@item.CartItemName</td>
+                            <td class="product-spec">@item.CartItemQuantity</td>
+                            <td class="product-price">@((item.CartItemPriceCents / 100.0m).ToString("C"))</td>
+                            <td class="product-spec"> x 15%</td>
+                            <td class="product-price">@item.SubtotalAsCurrency.ToString("C")</td>
+                            <td class="product-actions">
+                                <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                    <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                        <td><strong>@Model.TotalAmountAsCurrency.ToString("C")</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="single-item-actions">
+            <a asp-controller="Cart" asp-action="Checkout" class="btn btn-secondary">Proceed to Checkout</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="single-item-container">
+        <p class="single-item-not-found-message">Your cart is empty.</p>
+        <div class="single-item-actions">
+            <a asp-controller="Builder" asp-action="Index" class="btn btn-primary">Start Building a PC</a>
+            <a asp-controller="Components" asp-action="Index" class="btn btn-secondary">Browse Individual Components</a>
+        </div>
+    </div>
+}

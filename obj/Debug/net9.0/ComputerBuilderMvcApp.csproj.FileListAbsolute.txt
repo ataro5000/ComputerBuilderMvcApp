@@ -1,0 +1,9 @@
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.csproj.AssemblyReference.cache
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.AssemblyInfoInputs.cache
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.AssemblyInfo.cs
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.csproj.CoreCompileInputs.cache
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.MvcApplicationPartsAssemblyInfo.cs
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.MvcApplicationPartsAssemblyInfo.cache
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.RazorAssemblyInfo.cache
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.RazorAssemblyInfo.cs

@@ -1,0 +1,127 @@
+@*
+    This view displays a list of available computer components.
+    It allows users to filter components by category using a dropdown menu with checkboxes.
+    Components are grouped by their type (e.g., CPU, GPU) and displayed in a grid format.
+    Each component card shows its image, name, price, a brief specification, and its average customer rating.
+    Users can click on a component to view its details or add it directly to the shopping cart.
+    If no components match the selected filters or if no filters are selected and no components exist,
+    a message indicating this is displayed.
+*@
+@model List<ComputerBuilderMvcApp.Models.Component>
+
+@{
+    ViewData["Title"] = "Browse Components";
+
+    var currentSelectedCategories = Context.Request.Query["categories"].ToList()
+    .Select(c => c).ToList();
+    var uniqueCategories = Model?.Select(c => c.Type)
+    .Where(t => !string.IsNullOrEmpty(t))
+    .Distinct().OrderBy(t => t).ToList() ?? new List<string?>();
+}
+
+    <div class="filter-dropdown-container ">
+        <button type="button" class="filter-button dropdown-toggle" id="filterDropdownButton">
+            <img src="~/images/icons/hamburger-menu.png" class="filter-icon" />
+        </button>
+        <div class="filter-dropdown-menu" id="filterDropdownMenu">
+
+            <form asp-controller="Components" asp-action="Index" method="get" class="dropdown-content">
+                @if (uniqueCategories.Any())
+                {
+                    foreach (var categoryName in uniqueCategories)
+                    {
+                        if (categoryName != null)
+                        {
+                            var categoryLower = categoryName.ToLowerInvariant();
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="categories" value="@categoryName"
+                                    id="category-@categoryLower" @(currentSelectedCategories.Contains(categoryLower) ? "checked" : "") />
+                                <label class="form-check-label" for="category-@categoryLower">
+                                    @categoryName
+                                </label>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No categories available to filter.</p>
+                }
+                <hr />
+                <div class="">
+                    <button type="submit" class="btn-primary">Apply Filters</button>
+                    <a asp-controller="Components" asp-action="Index" class="btn-outline-secondary">Clear Filters</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<section class="component-list">
+    <h1>@ViewData["Title"]</h1>
+    <p>Explore our wide range of PC components. Select categories to filter.</p>
+    <hr />
+
+
+    @if (Model != null && Model.Any())
+    {
+        var groupedComponents = Model.GroupBy(c => c.Type)
+        .OrderBy(g => g.Key);
+
+        foreach (var group in groupedComponents)
+        {
+            if (!string.IsNullOrEmpty(group.Key))
+            {
+                <h2>@group.Key</h2>
+                <div role="main" class="products-grid">
+                    @foreach (var component in group.OrderBy(c => c.Name))
+                    {
+                        <div class="product-container">
+                            <a asp-controller="Components" asp-action="Details" asp-route-id="@component.Id" class="product-link">
+                                <div class="product-image-container">
+                                    <img class="product-image" src="@component.Image" alt="@component.Name">
+                                </div>
+                                <div class="product-details">
+                                    <div class="product-name limit-text-to-2-lines product-link">
+                                        @component.Name
+                                    </div>
+                                    <div class="product-price">
+                                        Price: $@(component.PriceCents / 100m)
+                                    </div>
+                                    <p class="product-spec">@component.Spec</p>
+                                    <div class="product-rating">
+                                        @if (component.ReviewCount > 0)
+                                        {
+                                            <img src="~/images/ratings/@component.RatingImageName" alt="Rating @component.AverageRating.ToString("0") out of 5" class="rating-image" />
+                                            <span class="review-count ms-1">(@component.ReviewCount)</span>
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/ratings/rating-0.png" alt="No reviews" class="rating-image" />
+                                             <span class="review-count no-reviews ms-1">No reviews</span>
+                                        }
+                                    </div>
+                                        
+                                </div>
+                            </a>
+                            <div class="added-to-cart">
+                                <img src="images/icons/checkmark.png">
+                                Added
+                            </div>
+                            <div class="product-actions">
+                                <form asp-controller="Cart" asp-action="AddSingleComponentToCart" method="post"">
+                                    <input type="hidden" name="componentId" value="@component.Id" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button type="submit" class="add-to-cart-button">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <p>No components found for the selected criteria, or no categories selected.</p>
+    }
+</section>
