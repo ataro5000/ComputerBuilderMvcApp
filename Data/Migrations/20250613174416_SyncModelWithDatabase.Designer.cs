@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerBuilderMvcApp.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20250612140110_CreateOrderAndOrderItemTables")]
-    partial class CreateOrderAndOrderItemTables
+    [Migration("20250613174416_SyncModelWithDatabase")]
+    partial class SyncModelWithDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,14 +57,8 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("City")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -103,12 +97,6 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -143,6 +131,14 @@ namespace ComputerBuilderMvcApp.Data.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18, 2)");

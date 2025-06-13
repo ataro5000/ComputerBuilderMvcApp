@@ -1,8 +1,3 @@
-// This script handles various client-side interactions for the Computer Builder application.
-// It manages the display of "Added to Cart" notifications, toggles a mini-cart preview,
-// processes "Add to Cart" actions via AJAX, updates the cart item count badge and mini-cart summary,
-// and implements interactive star rating functionality for product reviews.
-// All interactions are initialized after the DOM content is fully loaded.
 
 document.addEventListener('DOMContentLoaded', function () {
     function updateBuildSummary() {
@@ -77,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Attach event listener to the "Add Configuration to Cart" button
-    const addToCartButton = document.querySelector('.btn-success');
+    const addToCartButton = document.querySelector('.btn-computer-success');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', function (event) {
             event.preventDefault(); // Prevent default form submission

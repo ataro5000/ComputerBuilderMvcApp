@@ -16,9 +16,9 @@ namespace ComputerBuilderMvcApp.Services
         Task<List<Component?>> GetReviewsForComponentIdAsync(int componentId);
         Task<Component?> GetComponentByIdAsync(int componentId);
     }
-    public class ComponentService(ApplicationDbContext context) : IComponentService
+    public class ComponentService(Data.DbContext context) : IComponentService
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly Data.DbContext _context = context;
 
         public async Task<List<Component>> GetComponentsAsync(List<string> categories)
         {

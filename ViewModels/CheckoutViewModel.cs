@@ -7,7 +7,7 @@ namespace ComputerBuilderMvcApp.ViewModels
 {
     public class CheckoutViewModel
     {
-              [BindNever] // Instructs the model binder to ignore this property on POST
+        [BindNever] // Instructs the model binder to ignore this property on POST
         public Cart? Cart { get; set; }
 
         [BindNever] // Instructs the model binder to ignore this property on POST

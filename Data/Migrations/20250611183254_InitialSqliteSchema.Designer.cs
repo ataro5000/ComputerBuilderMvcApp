@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerBuilderMvcApp.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(Data.DbContext))]
     [Migration("20250611183254_InitialSqliteSchema")]
     partial class InitialSqliteSchema
     {

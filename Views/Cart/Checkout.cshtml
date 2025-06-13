@@ -37,7 +37,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="text-end"><strong>Total (before tax):</strong></td>
+                            <td colspan="3" class="text-end"><strong>Total (after tax):</strong></td>
                             <td class="text-end"><strong>@(Model.Cart.Items.Sum(i => i.SubtotalAsCurrency).ToString("C"))</strong></td>
                         </tr>
                         @* You can add tax calculation display here if needed *@

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerBuilderMvcApp.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<Customer>(options)
+    public class DbContext(DbContextOptions<DbContext> options) : IdentityDbContext<Customer>(options)
     {
         public DbSet<Component> Component { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -22,7 +22,7 @@ namespace ComputerBuilderMvcApp.Data
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
-                .WithMany() 
+                .WithMany(c => c.Orders) 
                 .HasForeignKey(o => o.CustomerId)
                 .IsRequired();
 

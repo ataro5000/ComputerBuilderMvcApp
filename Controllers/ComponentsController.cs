@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerBuilderMvcApp.Controllers
 {
-    public class ComponentsController(ApplicationDbContext context) : Controller
+    public class ComponentsController(Data.DbContext context) : Controller
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly Data.DbContext _context = context;
 
         // Displays a list of components, optionally filtered by categories.
         // It loads all components and their associated reviews.

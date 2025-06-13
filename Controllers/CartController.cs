@@ -12,14 +12,14 @@ namespace ComputerBuilderMvcApp.Controllers
     public class CartController(
         Cart cart,
         IComponentService componentService,
-        ApplicationDbContext dbContext,
+        DbContext dbContext,
         UserManager<Customer> userManager,
         ILogger<CartController> logger,
         SignInManager<Customer> signInManager) : Controller
     {
         private readonly Cart _cart = cart;
         private readonly IComponentService _componentService = componentService;
-        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly DbContext _dbContext = dbContext;
         private readonly UserManager<Customer> _userManager = userManager;
         private readonly ILogger<CartController> _logger = logger;
         private readonly SignInManager<Customer> _signInManager = signInManager;

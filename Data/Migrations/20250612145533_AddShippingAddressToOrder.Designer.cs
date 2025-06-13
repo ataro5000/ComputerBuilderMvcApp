@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerBuilderMvcApp.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(DbContext))]
     [Migration("20250612145533_AddShippingAddressToOrder")]
     partial class AddShippingAddressToOrder
     {

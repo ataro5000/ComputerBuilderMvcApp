@@ -1,5 +1,6 @@
-﻿@model IEnumerable<ComputerBuilderMvcApp.Models.Order>
-@using ComputerBuilderMvcApp.Models 
+﻿@page
+@model MyOrdersModel 
+
 
 @{
     ViewData["Title"] = "My Orders";
@@ -12,23 +13,15 @@
 {
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
-@if (TempData["InfoMessage"] != null)
-{
-    <div class="alert alert-info">@TempData["InfoMessage"]</div>
-}
 
-@if (!Model.Any())
+@if (!Model.Orders.Any()) // Change to Model.Orders
 {
     <p>You have not placed any orders yet.</p>
 }
 else
 {
     <div class="accordion" id="ordersAccordion">
-        @foreach (var order in Model)
+        @foreach (var order in Model.Orders) // Change to Model.Orders
         {
             <div class="accordion-item mb-3">
                 <h2 class="accordion-header" id="heading-@order.OrderId">
@@ -43,28 +36,15 @@ else
                         <h6>Items:</h6>
                         @if (order.OrderItems != null && order.OrderItems.Any())
                         {
-                            <ul class="list-group mb-3">
+                            <ul class="list-group list-group-flush">
                                 @foreach (var item in order.OrderItems)
                                 {
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            @if (item.Component != null)
-                                            {
-                                                <a asp-controller="Component" asp-action="Details" asp-route-id="@item.ComponentId">
-                                                    @item.Component.Name
-                                                </a>
-                                                <span> - (@item.Component.Type)</span>
-                                            }
-                                            else
-                                            {
-                                                <span>Component details not available</span>
-                                            }
+                                            @(item.Component?.Name ?? "N/A") 
+                                            <small class="text-muted"> (Quantity: @item.Quantity)</small>
                                         </div>
-                                        <div>
-                                            <span>Quantity: @item.Quantity</span>
-                                            <span class="ms-3">Unit Price: @item.UnitPrice.ToString("C")</span>
-                                            <span class="ms-3 fw-bold">Subtotal: @((item.Quantity * item.UnitPrice).ToString("C"))</span>
-                                        </div>
+                                        <span>@((item.UnitPrice * item.Quantity).ToString("C"))</span>
                                     </li>
                                 }
                             </ul>
@@ -78,7 +58,7 @@ else
                         <div class="mt-3 order-actions">
                             @if (order.Status == OrderStatus.Pending || order.Status == OrderStatus.Processing)
                             {
-                                <form asp-action="CancelOrder" asp-controller="Account" method="post" class="d-inline">
+                                <form method="post" asp-page-handler="CancelOrder" class="d-inline">
                                     <input type="hidden" name="orderId" value="@order.OrderId" />
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</button>
@@ -87,7 +67,7 @@ else
 
                             @if (order.Status == OrderStatus.Pending) 
                             {
-                                <form asp-action="ModifyOrder" asp-controller="Account" method="post" class="d-inline ms-2">
+                                <form method="post" asp-page-handler="ModifyOrder" class="d-inline ms-2">
                                     <input type="hidden" name="orderId" value="@order.OrderId" />
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn btn-sm btn-warning">Modify Order (Re-add to Cart)</button>
@@ -100,7 +80,3 @@ else
         }
     </div>
 }
-
-<p class="mt-3">
-    <a asp-action="Index" asp-controller="Account">Back to Account</a>
-</p>
