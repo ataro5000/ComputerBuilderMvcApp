@@ -1,6 +1,3 @@
-// This file is the main entry point for the ASP.NET Core application.
-// It configures services, defines the HTTP request pipeline, and sets up routing.
-// It also includes a static helper class `SessionCart` for managing the shopping cart in the session.
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ComputerBuilderMvcApp.Data;
@@ -12,24 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-  
-    options.UseSqlite(connectionString)); 
+    options.UseSqlite(connectionString));
 
-builder.Services.AddDefaultIdentity<Customer>(options => options.SignIn.RequireConfirmedAccount = true) 
+builder.Services.AddDefaultIdentity<Customer>(options =>
+options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-    
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IComponentService, ComponentService>();
-// Configure session services.
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Sets session timeout.
-    options.Cookie.HttpOnly = true; // Makes the session cookie inaccessible to client-side scripts.
-    options.Cookie.IsEssential = true; // Marks the session cookie as essential for GDPR compliance.
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true; 
+    options.Cookie.IsEssential = true; 
 });
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -50,7 +47,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     // User settings.
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false; // Set to true if you want unique emails
+    options.User.RequireUniqueEmail = false; 
 });
 
 builder.Services.AddScoped(SessionCart.GetCart);
@@ -60,30 +57,28 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error"); 
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error"); // Uses a generic error handler page in production.
+        app.UseHsts(); 
+    }
 
-    app.UseHsts(); // Adds HTTP Strict Transport Security Protocol (HSTS) headers.
-}
+app.UseHttpsRedirection(); 
+app.UseStaticFiles(); 
 
-app.UseHttpsRedirection(); // Redirects HTTP requests to HTTPS.
-app.UseStaticFiles(); // Enables serving static files (e.g., CSS, JavaScript, images).
+app.UseRouting();
 
-app.UseRouting(); 
-
-app.UseSession(); 
+app.UseSession();
 
 app.UseAuthentication();
-app.UseAuthorization(); 
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-app.Run(); 
+app.Run();
 
 

@@ -1,10 +1,7 @@
 @using Microsoft.AspNetCore.Identity
-// If you have a custom ApplicationUser class, ensure its namespace is imported here.
-// For example: @using ComputerBuilderMvcApp.Models 
-// If using default IdentityUser, the line above might not be needed or might need adjustment.
-
-@inject SignInManager<IdentityUser> SignInManager @* Changed from ApplicationUser *@
-@inject UserManager<IdentityUser> UserManager @* Changed from ApplicationUser *@
+@using ComputerBuilderMvcApp.Models 
+@inject SignInManager<Customer> SignInManager
+@inject UserManager<Customer> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
