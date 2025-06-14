@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/details.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/pages.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
@@ -45,11 +46,11 @@
                 
                     <a id="manage" class="head-link orders-link" asp-area="Identity" asp-page="/Account/Manage/Index"
                         title="Manage">MyAccount</a>
+                    
                 
-                
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                    <form id="logoutForm" class="" asp-area="Identity" asp-page="/Account/Logout"
                         asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        <button id="logout" type="submit" class="head-butt">Logout</button>
                     </form>
             }
             else
@@ -85,7 +86,6 @@
             &nbsp;|&nbsp; <a href="#top">Back to Top</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

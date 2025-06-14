@@ -84,6 +84,7 @@
                                 By <strong>@(string.IsNullOrEmpty(review.CustomerName) ? "Anonymous" : review.CustomerName)</strong>
                                 on @review.ReviewDate.ToString("MMMM dd, yyyy")
                             </p>
+                            <hr />
                         </div>
                     </div>
                 }
@@ -94,7 +95,6 @@
             }
         </div>
 
-        <hr class="mt-4 mb-4"/>
         
         @* Section to add a new review *@
         <div class="add-review-section mt-4 card">

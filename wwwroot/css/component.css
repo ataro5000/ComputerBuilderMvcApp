@@ -6,7 +6,6 @@ h1 {
 }
 
 p {
-    text-align: center;
     font-size: 1rem;
     margin-bottom: 20px;
 }
@@ -257,6 +256,7 @@ hr {
 
 .form-control {
     border: 1px solid #ddd;
+    margin: 5px 0;
     border-radius: 5px;
     padding: 10px;
     font-size: 1rem;
