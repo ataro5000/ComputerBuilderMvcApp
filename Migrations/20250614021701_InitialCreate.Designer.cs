@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ComputerBuilderMvcApp.Data.Migrations
+namespace ComputerBuilderMvcApp.Migrations
 {
-    [DbContext(typeof(DbContext))]
-    [Migration("20250612140110_CreateOrderAndOrderItemTables")]
-    partial class CreateOrderAndOrderItemTables
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20250614021701_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,14 +57,8 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("City")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -103,12 +97,6 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -143,6 +131,14 @@ namespace ComputerBuilderMvcApp.Data.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18, 2)");
@@ -344,7 +340,7 @@ namespace ComputerBuilderMvcApp.Data.Migrations
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Order", b =>
                 {
                     b.HasOne("ComputerBuilderMvcApp.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -436,6 +432,11 @@ namespace ComputerBuilderMvcApp.Data.Migrations
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Component", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.Customer", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Order", b =>

@@ -260,6 +260,7 @@ C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\Compu
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.MvcApplicationPartsAssemblyInfo.cache
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.RazorAssemblyInfo.cache
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.RazorAssemblyInfo.cs
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.sourcelink.json
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\scopedcss\bundle\ComputerBuilderMvcApp.styles.css
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\j9swiz3yzq-90yqlj465b.gz
@@ -321,12 +322,15 @@ C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compr
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\b9lhb08218-5pze98is44.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\mkcm9l4qb6-9ucrnpm789.gz
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\cjneyki8ld-upqsp7y0hq.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\hb17sx9lfm-1glx1olh0p.gz
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\vwp9ygjd5i-6825adbxbu.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\y8cznt7jat-b10614ckak.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\fyij35g44p-fi6dnsx0jy.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\i9v8bx85ou-7x1ztbtvcw.gz
-C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\ywyvkozegt-48y08845bh.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\zd0ny0vipy-m9qm4tazc0.gz
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\ywyvkozegt-48y08845bh.gz
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\s6yvi3shgk-b7a9emigcd.gz
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\staticwebassets.build.json
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\staticwebassets.development.json
@@ -337,6 +341,3 @@ C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\refin
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.pdb
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.genruntimeconfig.cache
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ref\ComputerBuilderMvcApp.dll
-C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\s6yvi3shgk-b7a9emigcd.gz
-C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\vwp9ygjd5i-6825adbxbu.gz
-C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\cjneyki8ld-upqsp7y0hq.gz

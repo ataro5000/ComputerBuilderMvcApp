@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerBuilderMvcApp.Controllers
 {
-    public class ReviewController(Data.DbContext context) : Controller
+    public class ReviewController(ApplicationDbContext context) : Controller
     {
-         private readonly Data.DbContext _context = context;
+         private readonly ApplicationDbContext _context = context;
         // The LoadReviewsFromFile and SaveReviewsToFile methods are no longer needed
         // as reviews are now handled by the database.
 

@@ -12,11 +12,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
     public class MyOrdersModel : PageModel
     {
         private readonly UserManager<Customer> _userManager;
-        private readonly Data.DbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<MyOrdersModel> _logger;
         private readonly Cart _cartService; // Assuming Cart is your service for cart operations
 
-        public MyOrdersModel(Data.DbContext context, UserManager<Customer> userManager, ILogger<MyOrdersModel> logger, Cart cartService)
+        public MyOrdersModel(ApplicationDbContext context, UserManager<Customer> userManager, ILogger<MyOrdersModel> logger, Cart cartService)
         {
             _context = context;
             _userManager = userManager;

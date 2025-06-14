@@ -3,27 +3,25 @@ using System;
 using ComputerBuilderMvcApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ComputerBuilderMvcApp.Data.Migrations
+namespace ComputerBuilderMvcApp.Migrations
 {
-    [DbContext(typeof(Data.DbContext))]
-    [Migration("20250611185540_AddedAppEntities")]
-    partial class AddedAppEntities
+    [DbContext(typeof(ApplicationDbContext))]
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
 
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Component", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
@@ -56,14 +54,8 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("City")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -102,12 +94,6 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -130,23 +116,78 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ComponentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("OrderItemId");
+
+                    b.HasIndex("ComponentId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Review", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comments")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ComponentId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CustomerName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ItemId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("TEXT");
@@ -154,9 +195,9 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ComponentId");
+                    b.HasIndex("ItemId");
 
                     b.ToTable("Reviews");
                 });
@@ -293,11 +334,45 @@ namespace ComputerBuilderMvcApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.Order", b =>
+                {
+                    b.HasOne("ComputerBuilderMvcApp.Models.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.OrderItem", b =>
+                {
+                    b.HasOne("ComputerBuilderMvcApp.Models.Component", "Component")
+                        .WithMany()
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ComputerBuilderMvcApp.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Component");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Review", b =>
                 {
-                    b.HasOne("ComputerBuilderMvcApp.Models.Component", null)
+                    b.HasOne("ComputerBuilderMvcApp.Models.Component", "Component")
                         .WithMany("Reviews")
-                        .HasForeignKey("ComponentId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Component");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -354,6 +429,16 @@ namespace ComputerBuilderMvcApp.Data.Migrations
             modelBuilder.Entity("ComputerBuilderMvcApp.Models.Component", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.Customer", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ComputerBuilderMvcApp.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

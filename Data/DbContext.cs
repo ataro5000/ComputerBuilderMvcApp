@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerBuilderMvcApp.Data
 {
-    public class DbContext(DbContextOptions<DbContext> options) : IdentityDbContext<Customer>(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<Customer>(options)
     {
         public DbSet<Component> Component { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -13,7 +13,7 @@ namespace ComputerBuilderMvcApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Component>()
                 .HasMany(c => c.Reviews)
@@ -22,7 +22,7 @@ namespace ComputerBuilderMvcApp.Data
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
-                .WithMany(c => c.Orders) 
+                .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.CustomerId)
                 .IsRequired();
 
@@ -33,7 +33,7 @@ namespace ComputerBuilderMvcApp.Data
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Component)
-                .WithMany() 
+                .WithMany()
                 .HasForeignKey(oi => oi.ComponentId);
 
             modelBuilder.Entity<Order>()
@@ -43,6 +43,12 @@ namespace ComputerBuilderMvcApp.Data
             modelBuilder.Entity<OrderItem>()
                 .Property(oi => oi.UnitPrice)
                 .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.Orders)
+                .WithOne(o => o.Customer)
+                .HasForeignKey(o => o.CustomerId)
+                .IsRequired();
         }
     }
 }

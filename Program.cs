@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ComputerBuilderMvcApp.Data.DbContext>(options =>
+builder.Services.AddDbContext<ComputerBuilderMvcApp.Data.ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
 builder.Services.AddDefaultIdentity<Customer>(options =>
 options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ComputerBuilderMvcApp.Data.DbContext>();
+    .AddEntityFrameworkStores<ComputerBuilderMvcApp.Data.ApplicationDbContext>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
