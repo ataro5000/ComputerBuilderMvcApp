@@ -7,18 +7,14 @@ namespace ComputerBuilderMvcApp.Models
     {
         [Key]
         public int OrderItemId { get; set; }
-
-        public int OrderId { get; set; } // Foreign key to Order
+        public int OrderId { get; set; } 
         [ForeignKey("OrderId")]
         public virtual required Order Order { get; set; }
-
-        public int ComponentId { get; set; } // Foreign key to Component
+        public int ComponentId { get; set; } 
         [ForeignKey("ComponentId")]
         public virtual required Component Component { get; set; }
-
         public int Quantity { get; set; }
-
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal UnitPrice { get; set; } // Price at the time of purchase
+        public decimal UnitPrice { get; set; } 
     }
 }

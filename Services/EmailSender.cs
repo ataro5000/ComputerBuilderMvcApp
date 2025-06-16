@@ -12,7 +12,6 @@ namespace ComputerBuilderMvcApp.Services
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            // Use _configuration to get the API key from secrets.json or other config sources
             var apiKey = _configuration["SendGridApiKey"]; 
             var fromEmailConfig = _configuration["SendGridFromEmail"];
             var fromNameConfig = _configuration["SendGridFromName"];
@@ -21,11 +20,10 @@ namespace ComputerBuilderMvcApp.Services
                 throw new InvalidOperationException("SendGrid API key is not configured.");
             }
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(fromEmailConfig, fromNameConfig ?? "Your Application Name"); // Use configured name or a default
+            var from = new EmailAddress(fromEmailConfig, fromNameConfig ?? "Your Application Name"); 
             var to = new EmailAddress(email); 
             var plainTextContent = htmlMessage;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlMessage);
-
             try
             {
                 var response = await client.SendEmailAsync(msg).ConfigureAwait(false);

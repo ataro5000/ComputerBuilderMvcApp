@@ -40,7 +40,6 @@
                             <td colspan="3" class="text-end"><strong>Total (after tax):</strong></td>
                             <td class="text-end"><strong>@(Model.Cart.Items.Sum(i => i.SubtotalAsCurrency).ToString("C"))</strong></td>
                         </tr>
-                        @* You can add tax calculation display here if needed *@
                     </tfoot>
                 </table>
             }
@@ -85,10 +84,6 @@
                         <small class="form-text text-info">Address will be updated for this order.</small>
                     }
                 </div>
-                
-                @* Hidden field to pass cart total if needed, though ProcessOrder can recalculate from _cart service *@
-                @* <input type="hidden" asp-for="Cart.TotalAmountBeforeTaxe" /> *@
-
                 <div class="builder-buttons">
                     <button type="submit" class="btn btn-success">Place Order</button>
                     <a asp-action="Index" asp-controller="Cart" class="btn btn-secondary">Back to Cart</a>
@@ -97,7 +92,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

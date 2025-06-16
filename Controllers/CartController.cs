@@ -31,19 +31,19 @@ namespace ComputerBuilderMvcApp.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> AddSingleComponentToCart(int componentId, int quantity = 1) // Made async
+        public async Task<JsonResult> AddSingleComponentToCart(int componentId, int quantity = 1)
         {
             if (componentId <= 0)
             {
                 return Json(new { success = false, message = "Component ID is missing." });
             }
 
-            var component = await _componentService.GetComponentByIdAsync(componentId); // Changed to use service
+            var component = await _componentService.GetComponentByIdAsync(componentId); 
 
             if (component != null)
             {
                 _cart.AddItem(component, quantity);
-                SessionCart.SaveCart(HttpContext.Session, _cart); // Ensure HttpContext is available or inject IHttpContextAccessor if needed in SessionCart
+                SessionCart.SaveCart(HttpContext.Session, _cart); 
                 return Json(new { success = true, message = $"{component.Name} (x{quantity}) added to cart." });
             }
             else
@@ -68,13 +68,11 @@ namespace ComputerBuilderMvcApp.Controllers
         {
             if (cartItemId <= 0)
             {
-                TempData["ErrorMessage"] = "Cart item ID is missing.";
                 return RedirectToAction("Index");
             }
             _cart.RemoveItem(cartItemId);
             SessionCart.SaveCart(HttpContext.Session, _cart);
 
-            TempData["SuccessMessage"] = "Item removed from cart.";
             return RedirectToAction("Index");
         }
 
@@ -90,14 +88,12 @@ namespace ComputerBuilderMvcApp.Controllers
 
             if (!_cart.Items.Any())
             {
-                TempData["ErrorMessage"] = "Your cart is empty. Please add items before checking out.";
-                return RedirectToAction("Index"); // Redirect to cart view
+                return RedirectToAction("Index"); 
             }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                // Should not happen if IsSignedIn is true, but good practice
                 return Challenge();
             }
 
@@ -105,30 +101,24 @@ namespace ComputerBuilderMvcApp.Controllers
             {
                 Cart = _cart,
                 CurrentCustomer = user,
-                ShippingAddress = user.Address ?? string.Empty // Pre-fill from customer profile or use an empty string if null
-                // FullName = $"{user.FirstName} {user.LastName}", // If you add these to ViewModel
-                // Email = user.Email // If you add these to ViewModel
+                ShippingAddress = user.Address ?? string.Empty 
             };
 
             return View(viewModel);
         }
 
-        // Processes the order.
-        // If the cart is empty, it redirects to the cart index page with an error message.
-        // Otherwise, it clears the cart, generates an order ID, and redirects to the order confirmation page.
         [HttpPost]
-        [ValidateAntiForgeryToken] // Good practice to add this
-        public async Task<IActionResult> ProcessOrder(CheckoutViewModel model) // Use CheckoutViewModel or a specific model for posted data
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProcessOrder(CheckoutViewModel model)
         {
 
-            if (!_signInManager.IsSignedIn(User)) // Re-check authentication
+            if (!_signInManager.IsSignedIn(User)) 
             {
-                return Challenge(); // Or redirect to login
+                return Challenge(); 
             }
 
             if (!_cart.Items.Any())
             {
-                TempData["ErrorMessage"] = "Cannot process order for an empty cart.";
                 return RedirectToAction("Index");
             }
 
@@ -141,7 +131,6 @@ namespace ComputerBuilderMvcApp.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                TempData["ErrorMessage"] = "Unable to identify user.";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -151,23 +140,21 @@ namespace ComputerBuilderMvcApp.Controllers
                 model.Cart = _cart; 
                 var currentUserForModel = await _userManager.GetUserAsync(User); 
                 if (currentUserForModel != null) model.CurrentCustomer = currentUserForModel;
-                TempData["ErrorMessage"] = "Please correct the errors below.";
                 return View("Checkout", model);
             }
 
             if (user == null)
             {
-                TempData["ErrorMessage"] = "User session expired or user not found. Please log in again.";
-                return RedirectToAction("Login", "Account", new { area = "Identity" }); // Or your login page
+                return RedirectToAction("Login", "Account", new { area = "Identity" }); 
             }
 
             var order = new Order
             {
                 CustomerId = user.Id,
                 OrderDate = DateTime.UtcNow,
-                TotalAmount = _cart.TotalAmountBeforeTaxe, // Corrected property name
+                TotalAmount = _cart.TotalAmountBeforeTaxe,
                 ShippingAddress = model.ShippingAddress,
-                Status = OrderStatus.Pending, // Set initial status
+                Status = OrderStatus.Pending,
                 OrderItems = []
             };
 
@@ -178,9 +165,9 @@ namespace ComputerBuilderMvcApp.Controllers
                 {
                     order.OrderItems.Add(new OrderItem
                     {
-                        Order = order, // Set the required Order property
+                        Order = order, 
                         ComponentId = component.Id,
-                        Component = component, // Set the required Component property
+                        Component = component, 
                         Quantity = cartItem.CartItemQuantity,
                         UnitPrice = cartItem.CartItemPriceCents / 100.0m
                     });
@@ -188,7 +175,6 @@ namespace ComputerBuilderMvcApp.Controllers
                 else
                 {
                     _logger.LogError($"Component with ID {cartItem.CartItemId} not found during order processing for user {user.UserName}.");
-                    TempData["ErrorMessage"] = "An error occurred while processing your order. Some items could not be found.";
                     model.Cart = _cart;
                     model.CurrentCustomer = user;
                     return View("Checkout", model);
@@ -198,7 +184,6 @@ namespace ComputerBuilderMvcApp.Controllers
             if (order.OrderItems.Count == 0)
             {
                 _logger.LogWarning("Order for user {UserName} had no valid items to process.", user.UserName);
-                TempData["ErrorMessage"] = "Your order could not be processed as no valid items were found.";
                 model.Cart = _cart;
                 model.CurrentCustomer = user;
                 return View("Checkout", model);
@@ -211,13 +196,9 @@ namespace ComputerBuilderMvcApp.Controllers
             var orderId = order.OrderId;
             _cart.Clear();
             SessionCart.SaveCart(HttpContext.Session, _cart);
-
-            TempData["SuccessMessage"] = $"Order #{orderId} placed successfully!";
             return RedirectToAction("OrderConfirmation", new { id = orderId.ToString() });
         }
 
-        // Displays the order confirmation page.
-        // Takes an order ID as a parameter.
         public IActionResult OrderConfirmation(string id)
         {
             ViewBag.OrderId = id;

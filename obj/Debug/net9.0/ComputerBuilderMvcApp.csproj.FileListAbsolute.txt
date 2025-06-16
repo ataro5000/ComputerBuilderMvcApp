@@ -348,3 +348,4 @@ C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\refin
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.pdb
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ComputerBuilderMvcApp.genruntimeconfig.cache
 C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\ref\ComputerBuilderMvcApp.dll
+C:\School\COMP466\TMA3A\EcommerceP4\ComputerBuilderMvcApp\obj\Debug\net9.0\compressed\6r2pykvp8t-v0rxjrtekd.gz

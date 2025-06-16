@@ -14,21 +14,14 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
-    public class EmailModel : PageModel
+    public class EmailModel(
+        UserManager<Customer> userManager,
+        SignInManager<Customer> signInManager,
+        IEmailSender emailSender) : PageModel
     {
-        private readonly UserManager<Customer> _userManager;
-        private readonly SignInManager<Customer> _signInManager;
-        private readonly IEmailSender _emailSender;
-
-        public EmailModel(
-            UserManager<Customer> userManager,
-            SignInManager<Customer> signInManager,
-            IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-        }
+        private readonly UserManager<Customer> _userManager = userManager;
+        private readonly SignInManager<Customer> _signInManager = signInManager;
+        private readonly IEmailSender _emailSender = emailSender;
 
         public string Email { get; set; }
         public bool IsEmailConfirmed { get; set; }

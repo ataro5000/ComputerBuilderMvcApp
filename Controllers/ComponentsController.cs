@@ -11,17 +11,13 @@ namespace ComputerBuilderMvcApp.Controllers
     {
         private readonly ApplicationDbContext _context = context;
 
-        // Displays a list of components, optionally filtered by categories.
-        // It loads all components and their associated reviews.
-             public async Task<IActionResult> Index(List<string> categories)
+        public async Task<IActionResult> Index(List<string> categories)
         {
             IQueryable<Component> query = _context.Component.Include(c => c.Reviews);
 
             if (categories != null && categories.Count > 0)
             {
-                // Using ToLowerInvariant() for the in-memory list is fine.
                 var lowerCategories = categories.Select(c => c.ToLowerInvariant()).ToList();
-                // Change ToLowerInvariant() to ToLower() for the database column c.Type
                 query = query.Where(c => c.Type != null && lowerCategories.Contains(c.Type.ToLower()));
             }
             var components = await query.ToListAsync();

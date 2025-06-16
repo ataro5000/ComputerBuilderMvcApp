@@ -31,7 +31,6 @@
                     Price: $@(Model.PriceCents / 100m)
                 </div>
                 <p class="details-item-spec">@Model.Spec</p>
-                 @* Add this section for star rating on details page *@
                 <div class="details-item-rating product-rating">
                     @if (Model.ReviewCount > 0)
                     {
@@ -58,10 +57,7 @@
                 <a asp-controller="Components" asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
         </div>
-
-        <hr class="mt-4 mb-4"/>
-
-        @* Section to display existing reviews *@
+        <hr />
         <div class="component-reviews-section mt-4">
             <h3>Customer Reviews (@Model.ReviewCount)</h3>
             @if (Model.Reviews != null && Model.Reviews.Any())
@@ -72,7 +68,6 @@
                         <div class="card-body">
                             <div class="review-rating product-rating mb-1">
                                 @{
-                                    // Ensure rating is a multiple of 5 for image name
                                     int reviewRatingImageVal = (int)(Math.Round((double)review.Rating / 5.0) * 5);
                                     reviewRatingImageVal = Math.Max(0, Math.Min(50, reviewRatingImageVal));
                                     var reviewRatingImage = $"rating-{reviewRatingImageVal:D2}.png";
@@ -94,9 +89,6 @@
                 <p>No reviews yet for this component. Be the first to write one!</p>
             }
         </div>
-
-        
-        @* Section to add a new review *@
         <div class="add-review-section mt-4 card">
             <div class="card-header">
                 <h3>Leave a Review for @Model.Name</h3>

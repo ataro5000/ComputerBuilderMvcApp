@@ -14,7 +14,7 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Customer> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly ILogger<MyOrdersModel> _logger;
-        private readonly Cart _cartService; // Assuming Cart is your service for cart operations
+        private readonly Cart _cartService;
 
         public MyOrdersModel(ApplicationDbContext context, UserManager<Customer> userManager, ILogger<MyOrdersModel> logger, Cart cartService)
         {
@@ -24,36 +24,34 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             _cartService = cartService;
         }
 
-        // Public property to hold the orders for the view
         public IList<Order> Orders { get; set; } = new List<Order>();
 
-        // Renamed from MyOrders to OnGetAsync, the Razor Pages convention for GET requests
-       public async Task<IActionResult> OnGetAsync()
+
+        public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return Challenge(); 
+                return Challenge();
             }
 
             Orders = await _context.Orders
                                 .Where(o => o.CustomerId == user.Id)
-                                .Include(o => o.OrderItems) // Eager load OrderItems
-                                    .ThenInclude(oi => oi.Component) // Then eager load Component for each OrderItem
+                                .Include(o => o.OrderItems)
+                                    .ThenInclude(oi => oi.Component) 
                                 .OrderByDescending(o => o.OrderDate)
                                 .ToListAsync();
 
             return Page();
         }
 
-        // Renamed to OnPostCancelOrderAsync for Razor Pages POST handler convention
         public async Task<IActionResult> OnPostCancelOrderAsync(int orderId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 TempData["ErrorMessage"] = "User not found. Please log in again.";
-                return RedirectToPage(); // Redirect to the current page
+                return RedirectToPage(); 
             }
 
             var order = await _context.Orders
@@ -76,11 +74,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             {
                 TempData["ErrorMessage"] = $"Order #{order.OrderId} cannot be cancelled as it is already {order.Status}.";
             }
-            return RedirectToPage(); // Redirect to the current page to refresh the order list
+            return RedirectToPage(); 
         }
 
-        // Renamed to OnPostModifyOrderAsync for Razor Pages POST handler convention
-            public async Task<IActionResult> OnPostModifyOrderAsync(int orderId)
+        public async Task<IActionResult> OnPostModifyOrderAsync(int orderId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -91,7 +88,7 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 
             var orderToModify = await _context.Orders
                                                     .Include(o => o.OrderItems)
-                                                        .ThenInclude(oi => oi.Component) 
+                                                        .ThenInclude(oi => oi.Component)
                                                     .FirstOrDefaultAsync(o => o.OrderId == orderId && o.CustomerId == user.Id);
 
             if (orderToModify == null)
@@ -116,9 +113,9 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
                     }
                 }
 
-                if (itemsAdded) 
+                if (itemsAdded)
                 {
-                    SessionCart.SaveCart(HttpContext.Session, _cartService); 
+                    SessionCart.SaveCart(HttpContext.Session, _cartService);
                 }
 
                 orderToModify.Status = OrderStatus.Cancelled;
@@ -133,15 +130,15 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
                     TempData["InfoMessage"] = $"Original Order #{orderToModify.OrderId} has been cancelled. No items were available to add back to the cart.";
                 }
                 _logger.LogInformation($"User {user.UserName} initiated modification for Order #{orderToModify.OrderId}. Items added to cart: {itemsAdded}. Original order cancelled.");
-                
-                return RedirectToAction("Index", "Cart"); 
+
+                return RedirectToAction("Index", "Cart");
             }
             else
             {
                 TempData["ErrorMessage"] = $"Order #{orderToModify.OrderId} cannot be modified as it is {orderToModify.Status}.";
                 return RedirectToPage();
             }
-        
+
         }
     }
 }

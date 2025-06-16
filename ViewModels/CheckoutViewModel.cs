@@ -7,12 +7,10 @@ namespace ComputerBuilderMvcApp.ViewModels
 {
     public class CheckoutViewModel
     {
-        [BindNever] // Instructs the model binder to ignore this property on POST
+        [BindNever] 
         public Cart? Cart { get; set; }
-
-        [BindNever] // Instructs the model binder to ignore this property on POST
+        [BindNever]
         public Customer? CurrentCustomer { get; set; }
-
         [Required(ErrorMessage = "Shipping address is required.")]
         public string ShippingAddress { get; set; } = string.Empty;
     }

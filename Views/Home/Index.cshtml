@@ -5,7 +5,9 @@
     a brief specification, and its average customer rating.
     Users can click on a component to view its details or add it directly to the shopping cart.
 *@
+
 @model List<ComputerBuilderMvcApp.Models.Component>
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -14,9 +16,7 @@
     <h1 class="display-4">Welcome to Computer Builder</h1>
     <p>Your one-stop shop for PC components and custom builds!</p>
 </div>
-
 <hr />
-
 @if (Model != null && Model.Any())
 {
     <h2>Featured Components</h2>
@@ -45,7 +45,7 @@
                             else
                             {
                                 <img src="~/images/ratings/rating-00.png" alt="No reviews" class="rating-image" />
-                                    <span class="review-count no-reviews ms-1">No reviews</span>
+                                <span class="review-count no-reviews ms-1">No reviews</span>
                             }
                         </div>
                     </div>
@@ -62,7 +62,6 @@
                     </form>
                 </div>
             </div>
-
         }
     </div>
 }

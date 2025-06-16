@@ -13,16 +13,10 @@ using Microsoft.Extensions.Logging;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
 {
-    public class LogoutModel : PageModel
+    public class LogoutModel(SignInManager<Customer> signInManager, ILogger<LogoutModel> logger) : PageModel
     {
-        private readonly SignInManager<Customer> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
-
-        public LogoutModel(SignInManager<Customer> signInManager, ILogger<LogoutModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        private readonly SignInManager<Customer> _signInManager = signInManager;
+        private readonly ILogger<LogoutModel> _logger = logger;
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
@@ -34,8 +28,6 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             }
             else
             {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
         }

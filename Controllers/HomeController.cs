@@ -7,44 +7,32 @@ using ComputerBuilderMvcApp.Services;
 
 namespace ComputerBuilderMvcApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IComponentService componentService, ILogger<HomeController> logger) : Controller
     {
-        private readonly IComponentService _componentService;
-        private readonly ILogger<HomeController> _logger; // Optional: if you need logging
-
-        // Updated constructor to inject IComponentService
-        public HomeController(IComponentService componentService, ILogger<HomeController> logger)
-        {
-            _componentService = componentService;
-            _logger = logger; // Store logger if injected
-        }
-        // Displays the home page.
-        // It loads all components, selects a few random ones as featured components, and passes them to the view.
+        private readonly IComponentService _componentService = componentService;
+        private readonly ILogger<HomeController> _logger = logger;
+        
         public async Task<IActionResult> Index(List<string> categories)
         {
             var featuredComponents = await _componentService.GetFeaturedComponentsAsync(4, categories);
-            
-
             return View(featuredComponents);
         }
 
-        // Displays the contact page.
+
         public IActionResult Contact()
         {
             return View();
         }
 
-        // Displays the feedback submission page.
+
         public IActionResult Feedback()
         {
-
             return View();
         }
 
-        // Displays the feedback thank you page.
+
         public IActionResult FeedbackThanks()
         {
-
             return View();
         }
 

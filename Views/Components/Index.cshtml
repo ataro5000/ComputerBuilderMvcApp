@@ -11,7 +11,6 @@
 
 @{
     ViewData["Title"] = "Browse Components";
-
     var currentSelectedCategories = Context.Request.Query["categories"].ToList()
     .Select(c => c).ToList();
     var uniqueCategories = Model?.Select(c => c.Type)
@@ -60,13 +59,10 @@
     <h1>@ViewData["Title"]</h1>
     <p>Explore our wide range of PC components. Select categories to filter.</p>
     <hr />
-
-
     @if (Model != null && Model.Any())
     {
         var groupedComponents = Model.GroupBy(c => c.Type)
         .OrderBy(g => g.Key);
-
         foreach (var group in groupedComponents)
         {
             if (!string.IsNullOrEmpty(group.Key))

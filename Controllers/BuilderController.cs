@@ -26,9 +26,7 @@ namespace ComputerBuilderMvcApp.Controllers
             {
                 throw new InvalidOperationException("Component service is not initialized.");
             }
-
-            var allFetchedComponents = await _componentService.GetComponentsAsync(categories); // Pass null to get all components
-
+            var allFetchedComponents = await _componentService.GetComponentsAsync(categories); 
             var viewModel = new ComputerBuilder
             {
                 ComponentCategories = predefinedBuilderCategories,
@@ -42,12 +40,10 @@ namespace ComputerBuilderMvcApp.Controllers
 
                 if (!viewModel.SelectedComponentIds.ContainsKey(categoryKey))
                 {
-                    viewModel.SelectedComponentIds[categoryKey] = 0; // Initialize with 0 if not already set
+                    viewModel.SelectedComponentIds[categoryKey] = 0; 
                 }
             }
-
             viewModel.TotalPrice = CalculateBuildPrice(viewModel.SelectedComponentIds, allFetchedComponents);
-
             return View(viewModel);
         }
 
@@ -57,50 +53,46 @@ namespace ComputerBuilderMvcApp.Controllers
         /// Redirects to the cart index page if the build is successfully added.
         /// Redirects back to the builder index page with an error message if no components are selected or if no valid components are found.
 
-    [HttpPost]
-[HttpPost]
-public async Task<IActionResult> BuildAndAddToCart(ComputerBuilder submittedBuild)
-{
-    if (submittedBuild.SelectedComponentIds == null || !submittedBuild.SelectedComponentIds.Values.Any(id => id > 0))
-    {
-        TempData["ErrorMessage"] = "Please select at least one component for your build.";
-        return RedirectToAction("Index");
-    }
 
-    if (_componentService == null)
-    {
-        throw new InvalidOperationException("Component service is not initialized.");
-    }
-
-    foreach (var selection in submittedBuild.SelectedComponentIds)
-    {
-        if (selection.Value > 0)
+        [HttpPost]
+        public async Task<IActionResult> BuildAndAddToCart(ComputerBuilder submittedBuild)
         {
-            // Fetch the component using the service
-            var component = await _componentService.GetComponentByIdAsync(selection.Value);
-            if (component != null)
+            if (submittedBuild.SelectedComponentIds == null || !submittedBuild.SelectedComponentIds.Values.Any(id => id > 0))
             {
-                Console.WriteLine($"Adding component: {component.Name} to cart.");
-                _cart.AddItem(component, 1);
+                return RedirectToAction("Index");
             }
-            else
+
+            if (_componentService == null)
             {
-                Console.WriteLine($"Component with ID {selection.Value} not found.");
+                throw new InvalidOperationException("Component service is not initialized.");
             }
+
+            foreach (var selection in submittedBuild.SelectedComponentIds)
+            {
+                if (selection.Value > 0)
+                {
+                    // Fetch the component using the service
+                    var component = await _componentService.GetComponentByIdAsync(selection.Value);
+                    if (component != null)
+                    {
+                        Console.WriteLine($"Adding component: {component.Name} to cart.");
+                        _cart.AddItem(component, 1);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Component with ID {selection.Value} not found.");
+                    }
+                }
+            }
+
+            if (_cart.Items.Count == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            // Save the cart to the session
+            SessionCart.SaveCart(HttpContext.Session, _cart);
+            return RedirectToAction("Index", "Cart", new { message = "Build added to cart successfully!" });
         }
-    }
-
-    if (_cart.Items.Count == 0)
-    {
-        TempData["ErrorMessage"] = "No valid components were selected or found for your build.";
-        return RedirectToAction("Index");
-    }
-
-    // Save the cart to the session
-    SessionCart.SaveCart(HttpContext.Session, _cart);
-
-    return RedirectToAction("Index", "Cart", new { message = "Build added to cart successfully!" });
-}
 
         /// Calculates the total price of the selected components in a build.
         /// A dictionary mapping component categories to the IDs of selected components.
@@ -126,6 +118,5 @@ public async Task<IActionResult> BuildAndAddToCart(ComputerBuilder submittedBuil
             }
             return totalPriceInCurrency / 100.0m;
         }
-
     }
 }
