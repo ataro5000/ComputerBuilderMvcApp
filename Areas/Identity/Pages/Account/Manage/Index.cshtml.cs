@@ -2,10 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using ComputerBuilderMvcApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +10,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class IndexModel(
+        UserManager<Customer> userManager,
+        SignInManager<Customer> signInManager) : PageModel
     {
-        private readonly UserManager<Customer> _userManager;
-        private readonly SignInManager<Customer> _signInManager;
-
-        public IndexModel(
-            UserManager<Customer> userManager,
-            SignInManager<Customer> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<Customer> _userManager = userManager;
+        private readonly SignInManager<Customer> _signInManager = signInManager;
 
         public string Username { get; set; }
 

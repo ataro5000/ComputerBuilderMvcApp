@@ -2,32 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+
 using ComputerBuilderMvcApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
-    public class ChangePasswordModel : PageModel
+    public class ChangePasswordModel(
+        UserManager<Customer> userManager,
+        SignInManager<Customer> signInManager,
+        ILogger<ChangePasswordModel> logger) : PageModel
     {
-        private readonly UserManager<Customer> _userManager;
-        private readonly SignInManager<Customer> _signInManager;
-        private readonly ILogger<ChangePasswordModel> _logger;
-
-        public ChangePasswordModel(
-            UserManager<Customer> userManager,
-            SignInManager<Customer> signInManager,
-            ILogger<ChangePasswordModel> logger)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        private readonly UserManager<Customer> _userManager = userManager;
+        private readonly SignInManager<Customer> _signInManager = signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger = logger;
 
         [BindProperty]
         public InputModel Input { get; set; }

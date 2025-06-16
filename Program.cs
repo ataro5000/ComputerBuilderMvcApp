@@ -4,16 +4,18 @@ using ComputerBuilderMvcApp.Data;
 using ComputerBuilderMvcApp.Models;
 using ComputerBuilderMvcApp.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ComputerBuilderMvcApp.Data.ApplicationDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
 builder.Services.AddDefaultIdentity<Customer>(options =>
 options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ComputerBuilderMvcApp.Data.ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
