@@ -1,3 +1,6 @@
+// This file defines the OrderItem class, which represents an individual item within an order.
+// It includes properties for the item's ID, associated order and component, quantity, and unit price.
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,14 +10,20 @@ namespace ComputerBuilderMvcApp.Models
     {
         [Key]
         public int OrderItemId { get; set; }
-        public int OrderId { get; set; } 
+
+        public int OrderId { get; set; }
+
         [ForeignKey("OrderId")]
         public virtual required Order Order { get; set; }
-        public int ComponentId { get; set; } 
+
+        public int ComponentId { get; set; }
+
         [ForeignKey("ComponentId")]
         public virtual required Component Component { get; set; }
+
         public int Quantity { get; set; }
+
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal UnitPrice { get; set; } 
+        public decimal UnitPrice { get; set; }
     }
 }

@@ -5,9 +5,16 @@ namespace ComputerBuilderMvcApp.Models
 {
     public class ComputerBuilder
     {
+        // Dictionary mapping component categories to lists of available components.
         public Dictionary<string, List<Component>> AvailableComponentsByType { get; set; } = [];
+
+        // Dictionary mapping component categories to the selected component ID for each.
         public Dictionary<string, int> SelectedComponentIds { get; set; } = [];
+
+        // Total price of the current build.
         public decimal TotalPrice { get; set; }
+
+        // List of all component categories in the builder.
         public List<string> ComponentCategories { get; set; } = [];
     }
 }

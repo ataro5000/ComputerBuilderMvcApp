@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// Email.cshtml.cs
+// This Razor PageModel handles the logic for managing a user's email address.
+// It loads the current email, processes requests to change the email, and sends
+// verification emails. It provides feedback to the user and ensures validation.
+// -----------------------------------------------------------------------------
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
@@ -14,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
+    // Handles email management, change requests, and verification for authenticated users.
     public class EmailModel(
         UserManager<Customer> userManager,
         SignInManager<Customer> signInManager,
@@ -29,6 +37,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
         public string StatusMessage { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
+
+        /// <summary>
+        /// Input model for capturing a new email address.
+        /// </summary>
         public class InputModel
         {
             [Required]
@@ -37,6 +49,9 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
+        /// <summary>
+        /// Loads the current user's email and confirmation status.
+        /// </summary>
         private async Task LoadAsync(Customer user)
         {
             var email = await _userManager.GetEmailAsync(user);
@@ -50,6 +65,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
+        /// <summary>
+        /// Handles GET requests for the email management page.
+        /// Loads the user's email information.
+        /// </summary>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -62,6 +81,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Handles POST requests to change the user's email address.
+        /// Validates input, sends a confirmation link, and provides feedback.
+        /// </summary>
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -100,6 +123,9 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// Handles POST requests to send a verification email to the user.
+        /// </summary>
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);

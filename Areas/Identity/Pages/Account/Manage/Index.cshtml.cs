@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// Index.cshtml.cs
+// This Razor PageModel handles the logic for managing the user's profile
+// information. It loads and updates the user's phone number, first name, and
+// last name, and provides feedback on profile changes.
+// -----------------------------------------------------------------------------
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
@@ -10,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
+    // Handles loading and updating user profile information.
     public class IndexModel(
         UserManager<Customer> userManager,
         SignInManager<Customer> signInManager) : PageModel
@@ -25,9 +33,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Input model for capturing profile update details.
+        /// </summary>
         public class InputModel
         {
-
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -38,6 +48,9 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             public string LastName { get; set; }
         }
 
+        /// <summary>
+        /// Loads the current user's profile information into the page model.
+        /// </summary>
         private async Task LoadAsync(Customer user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
@@ -53,10 +66,12 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
                 FirstName = firstName,
                 LastName = lastName
             };
-
-
         }
 
+        /// <summary>
+        /// Handles GET requests for the profile management page.
+        /// Loads the user's current profile information.
+        /// </summary>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -69,6 +84,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Handles POST requests for updating the user's profile.
+        /// Validates input, updates the user's phone number, first name, and last name, and provides feedback.
+        /// </summary>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);

@@ -1,4 +1,13 @@
-﻿@page
+﻿@*
+------------------------------------------------------------------------------
+MyOrders.cshtml
+This Razor Page provides the UI for users to view their order history. It lists
+all orders placed by the user, including order details, items, status, and
+actions such as canceling or modifying orders if allowed.
+------------------------------------------------------------------------------
+*@
+
+@page
 @model MyOrdersModel
 
 @{
@@ -58,8 +67,8 @@
                                                     </div>
                                                     <span class="text-end item-price">@((item.UnitPrice *
                                                                                                 item.Quantity).ToString("C"))</span>
-                                </li>
-                                                                }
+                                                </li>
+                                            }
                                         </ul>
                                     }
                                     else
@@ -72,6 +81,7 @@
                             </div>
 
                             <div class="mt-3 order-actions-container">
+                                @* Show cancel button if order is pending or processing *@
                                 @if (order.Status == OrderStatus.Pending || order.Status == OrderStatus.Processing)
                                 {
                                     <form method="post" asp-page-handler="CancelOrder" class="d-inline">
@@ -84,6 +94,7 @@
                                     </form>
                                 }
 
+                                @* Show modify button if order is pending *@
                                 @if (order.Status == OrderStatus.Pending)
                                 {
                                     <form method="post" asp-page-handler="ModifyOrder" class="d-inline ms-2">
@@ -104,6 +115,9 @@
 </div>
 
 @functions {
+    /// <summary>
+    /// Returns the Bootstrap badge class for the given order status.
+    /// </summary>
     public string GetStatusBadgeClass(OrderStatus status)
     {
         return status switch

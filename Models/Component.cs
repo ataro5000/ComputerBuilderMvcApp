@@ -11,7 +11,11 @@ namespace ComputerBuilderMvcApp.Models
         public decimal PriceCents { get; set; }
         public string? Spec { get; set; }
         public string? Image { get; set; }
+
+        // List of reviews for this component.
         public virtual ICollection<Review> Reviews { get; set; } = [];
+
+        // Average rating based on all reviews.
         public decimal AverageRating
         {
             get
@@ -22,6 +26,7 @@ namespace ComputerBuilderMvcApp.Models
             }
         }
 
+        // Name of the image file representing the average rating.
         public string RatingImageName
         {
             get
@@ -35,6 +40,7 @@ namespace ComputerBuilderMvcApp.Models
             }
         }
 
+        // Number of reviews for this component.
         public int ReviewCount
         {
             get

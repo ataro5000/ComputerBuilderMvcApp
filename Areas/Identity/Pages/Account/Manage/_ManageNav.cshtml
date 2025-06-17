@@ -1,3 +1,12 @@
+@*
+------------------------------------------------------------------------------
+_ManageNav.cshtml
+This partial Razor Page renders the navigation menu for the user account
+management section. It provides links to profile, email, password, and order
+management pages for authenticated users.
+------------------------------------------------------------------------------
+*@
+
 @inject SignInManager<Customer> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

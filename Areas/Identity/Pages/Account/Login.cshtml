@@ -1,4 +1,13 @@
-﻿@page
+﻿@*
+------------------------------------------------------------------------------
+Login.cshtml
+This Razor Page provides the UI for user login. Users enter their email and
+password to authenticate. The form also supports "Remember Me" functionality,
+links to password reset, registration, and email confirmation resend.
+------------------------------------------------------------------------------
+*@
+
+@page
 @model LoginModel
 
 @{
@@ -12,38 +21,46 @@
             <form id="account" method="post">
                 <h2>Use a local account to log in.</h2>
                 <hr />
+                @* Displays validation errors for the form *@
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating">
+                    @* Input field for the user's email address *@
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"
                         placeholder="name@example.com" />
                     <label asp-for="Input.Email" class="form-label">Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating">
+                    @* Input field for the user's password *@
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
                         aria-required="true" placeholder="password" />
                     <label asp-for="Input.Password" class="form-label">Password</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox">
+                    @* Checkbox for "Remember Me" functionality *@
                     <label asp-for="Input.RememberMe" class="form-label">
                         <input class="form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
                 <div>
+                    @* Button to submit the login form *@
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg button-primary">Log in</button>
                 </div>
     
                 <div class="login-link-container">
+                    @* Link to password reset page *@
                     <p>
                         <a class="forgot-password-link" id="forgot-password" asp-page="./ForgotPassword">Forgot your
                             password?</a>
                     </p>
+                    @* Link to registration page *@
                     <p>
                         <a class="login-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a
                             new user</a>
                     </p>
+                    @* Link to resend email confirmation *@
                     <p>
                         <a class="login-link" id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email
                             confirmation</a>
@@ -53,4 +70,3 @@
         </section>
     </div>
 </div>
-

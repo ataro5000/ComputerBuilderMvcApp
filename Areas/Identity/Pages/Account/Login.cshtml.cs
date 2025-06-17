@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// Login.cshtml.cs
+// This Razor PageModel handles the logic for user login. It processes login
+// requests, validates user credentials, manages external authentication schemes,
+// and handles login errors, two-factor authentication, and account lockout.
+// -----------------------------------------------------------------------------
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
@@ -18,16 +25,15 @@ using Microsoft.Extensions.Logging;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    // Handles user login, authentication, and related error handling.
+    /// <summary>
+    /// Constructor for LoginModel.
+    /// Initializes the sign-in manager and logger dependencies.
+    /// </summary>
+    public class LoginModel(SignInManager<Customer> signInManager, ILogger<LoginModel> logger) : PageModel
     {
-        private readonly SignInManager<Customer> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<Customer> signInManager, ILogger<LoginModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        private readonly SignInManager<Customer> _signInManager = signInManager;
+        private readonly ILogger<LoginModel> _logger = logger;
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -39,9 +45,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// Input model for capturing the user's login credentials.
+        /// </summary>
         public class InputModel
         {
-
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -54,6 +62,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
+        /// <summary>
+        /// Handles GET requests for the login page.
+        /// Signs out any external authentication, loads external login schemes, and sets the return URL.
+        /// </summary>
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -63,7 +75,6 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
-
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
@@ -71,6 +82,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        /// <summary>
+        /// Handles POST requests for user login.
+        /// Validates credentials, manages login state, and handles errors or redirects as needed.
+        /// </summary>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

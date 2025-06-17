@@ -1,3 +1,6 @@
+// This file defines the FeedbackViewModel class, which is used to capture user feedback submitted through the feedback form.
+// It includes properties for the user's email, subject, message, and optional name.
+
 using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilderMvcApp.ViewModels

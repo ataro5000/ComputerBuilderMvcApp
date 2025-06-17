@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// Register.cshtml.cs
+// This Razor PageModel handles the logic for user registration. It processes
+// registration requests, validates user input, creates a new user account,
+// sends a confirmation email, and manages sign-in or confirmation flow.
+// -----------------------------------------------------------------------------
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
@@ -22,6 +29,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
 {
+    // Handles user registration, validation, and email confirmation.
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<Customer> _signInManager;
@@ -31,6 +39,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        /// <summary>
+        /// Constructor for RegisterModel.
+        /// Initializes dependencies for user management, sign-in, logging, and email sending.
+        /// </summary>
         public RegisterModel(
             UserManager<Customer> userManager,
             IUserStore<Customer> userStore,
@@ -53,9 +65,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /// <summary>
+        /// Input model for capturing registration details.
+        /// </summary>
         public class InputModel
         {
-
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -73,13 +87,20 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
+        /// <summary>
+        /// Handles GET requests for the registration page.
+        /// Loads external authentication schemes and sets the return URL.
+        /// </summary>
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
         }
 
+        /// <summary>
+        /// Handles POST requests for user registration.
+        /// Validates input, creates the user, sends confirmation email, and manages sign-in or confirmation flow.
+        /// </summary>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -127,6 +148,9 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Creates a new Customer user instance.
+        /// </summary>
         private Customer CreateUser()
         {
             try
@@ -141,6 +165,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account
             }
         }
 
+        /// <summary>
+        /// Gets the email store for the Customer user.
+        /// Throws if the user manager does not support email.
+        /// </summary>
         private IUserEmailStore<Customer> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)

@@ -1,3 +1,5 @@
+// This file contains JavaScript for dynamic UI interactions in the ecommerce app.
+// It handles build summary updates, cart actions, mini cart preview, and star rating input.
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -31,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     updateBuildSummary();
 
-    
     function collectSelectedComponentsAndSubmit() {
         const selectedComponents = {};
         const dropdowns = document.querySelectorAll('[id^="select-"]');
@@ -43,18 +44,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 selectedComponents[category] = parseInt(selectedId, 10); 
             }
         });
-    
+
         if (Object.keys(selectedComponents).length === 0) {
             alert("Please select at least one component for your build.");
             return;
         }
-    
-        const form = document.querySelector('form[asp-action="BuildAndAddToCart"]') || document.querySelector('form'); // Fallback to generic form selector
+
+        const form = document.querySelector('form[asp-action="BuildAndAddToCart"]') || document.querySelector('form');
         if (!form) {
             console.error('Form element not found. Ensure the form exists and has the correct asp-action attribute.');
             return;
         }
-    
+
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'SelectedComponentIds';
@@ -172,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-
         starContainer.addEventListener('mouseout', function () {
             updateStarsDisplay(displayRating);
         });
@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     updateCartSummaryDisplay(null);
 });
-
 
 function updateCartSummaryDisplay(lastAddedItemName) {
     fetch('/Cart/GetCartItemCount')

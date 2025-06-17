@@ -1,17 +1,23 @@
+// -----------------------------------------------------------------------------
+// ChangePassword.cshtml.cs
+// This Razor PageModel handles the logic for changing a user's password. It
+// validates the current password, ensures the new password meets requirements,
+// updates the password, and provides feedback to the user.
+// -----------------------------------------------------------------------------
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-
 using ComputerBuilderMvcApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
+    // Handles password change logic and validation for authenticated users.
     public class ChangePasswordModel(
         UserManager<Customer> userManager,
         SignInManager<Customer> signInManager,
@@ -23,25 +29,36 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
+
+        /// <summary>
+        /// Input model for capturing password change details.
+        /// </summary>
         public class InputModel
         {
-             [Required]
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Current password")]
             public string OldPassword { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }
+
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// Handles GET requests for the change password page.
+        /// Checks if the user has a password set and redirects if not.
+        /// </summary>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -59,6 +76,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Handles POST requests for changing the user's password.
+        /// Validates input, attempts to change the password, and provides feedback.
+        /// </summary>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

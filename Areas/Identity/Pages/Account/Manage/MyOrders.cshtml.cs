@@ -1,3 +1,13 @@
+// -----------------------------------------------------------------------------
+// MyOrders.cshtml.cs
+// This Razor PageModel handles the logic for displaying and managing a user's
+// order history. It allows users to view, cancel, and modify their orders.
+// -----------------------------------------------------------------------------
+//
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using ComputerBuilderMvcApp.Models;
@@ -8,6 +18,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// PageModel for viewing, canceling, and modifying user orders.
+    /// </summary>
     [Authorize]
     public class MyOrdersModel : PageModel
     {
@@ -16,6 +29,10 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<MyOrdersModel> _logger;
         private readonly Cart _cartService;
 
+        /// <summary>
+        /// Constructor for MyOrdersModel.
+        /// Initializes dependencies for user management, database context, logging, and cart service.
+        /// </summary>
         public MyOrdersModel(ApplicationDbContext context, UserManager<Customer> userManager, ILogger<MyOrdersModel> logger, Cart cartService)
         {
             _context = context;
@@ -24,9 +41,15 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             _cartService = cartService;
         }
 
+        /// <summary>
+        /// List of orders belonging to the current user.
+        /// </summary>
         public IList<Order> Orders { get; set; } = new List<Order>();
 
-
+        /// <summary>
+        /// Handles GET requests to display the user's order history.
+        /// Loads all orders for the current user, including order items and components.
+        /// </summary>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -45,6 +68,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Handles POST requests to cancel an order.
+        /// Only allows cancellation if the order is pending or processing.
+        /// </summary>
+        /// <param name="orderId">The ID of the order to cancel.</param>
         public async Task<IActionResult> OnPostCancelOrderAsync(int orderId)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -77,6 +105,11 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage(); 
         }
 
+        /// <summary>
+        /// Handles POST requests to modify an order.
+        /// If the order is pending, adds its items back to the cart and cancels the original order.
+        /// </summary>
+        /// <param name="orderId">The ID of the order to modify.</param>
         public async Task<IActionResult> OnPostModifyOrderAsync(int orderId)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -99,6 +132,7 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
 
             if (orderToModify.Status == OrderStatus.Pending)
             {
+                // Add each order item back to the cart
                 bool itemsAdded = false;
                 foreach (var item in orderToModify.OrderItems)
                 {
@@ -113,11 +147,13 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
                     }
                 }
 
+                // Save the updated cart to session if items were added
                 if (itemsAdded)
                 {
                     SessionCart.SaveCart(HttpContext.Session, _cartService);
                 }
 
+                // Cancel the original order
                 orderToModify.Status = OrderStatus.Cancelled;
                 await _context.SaveChangesAsync();
 
@@ -131,6 +167,7 @@ namespace ComputerBuilderMvcApp.Areas.Identity.Pages.Account.Manage
                 }
                 _logger.LogInformation($"User {user.UserName} initiated modification for Order #{orderToModify.OrderId}. Items added to cart: {itemsAdded}. Original order cancelled.");
 
+                // Redirect to the cart page for further modification
                 return RedirectToAction("Index", "Cart");
             }
             else

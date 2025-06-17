@@ -1,11 +1,12 @@
+// This file defines the EmailSender class, which implements IEmailSender to send emails using SendGrid.
+// It retrieves configuration from app settings and sends emails asynchronously.
+
 using Microsoft.AspNetCore.Identity.UI.Services; // Required for IEmailSender
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-
 namespace ComputerBuilderMvcApp.Services
 {
-   
     public class EmailSender(IConfiguration configuration) : IEmailSender
     {
         private readonly IConfiguration _configuration = configuration;
@@ -41,6 +42,5 @@ namespace ComputerBuilderMvcApp.Services
                 throw;
             }
         }
-
     }
 }

@@ -1,5 +1,6 @@
 // This file defines the CartController class, which manages the shopping cart functionality.
 // It handles adding, removing, and viewing items in the cart, as well as processing orders and displaying order confirmations.
+
 using Microsoft.AspNetCore.Mvc;
 using ComputerBuilderMvcApp.Models;
 using ComputerBuilderMvcApp.Services;
@@ -24,12 +25,14 @@ namespace ComputerBuilderMvcApp.Controllers
         private readonly ILogger<CartController> _logger = logger;
         private readonly SignInManager<Customer> _signInManager = signInManager;
 
-        
+        // Displays the cart page with all items currently in the cart.
         public IActionResult Index()
         {
             return View(_cart);
         }
 
+        // Adds a single component to the cart by componentId and quantity.
+        // Returns a JSON result indicating success or failure.
         [HttpPost]
         public async Task<JsonResult> AddSingleComponentToCart(int componentId, int quantity = 1)
         {
@@ -51,6 +54,7 @@ namespace ComputerBuilderMvcApp.Controllers
                 return Json(new { success = false, message = "Component not found." });
             }
         }
+
         // Retrieves the current number of items in the cart and the total price.
         // Returns a JSON response with the item count and total cart price.
         [HttpGet]
@@ -77,7 +81,8 @@ namespace ComputerBuilderMvcApp.Controllers
         }
 
         // Displays the checkout page.
-        // If the cart is empty, it redirects to the cart index page with an error message.
+        // If the user is not signed in, redirects to login.
+        // If the cart is empty, redirects to the cart index page.
         public async Task<IActionResult> CheckoutAsync()
         {
             if (!_signInManager.IsSignedIn(User))
@@ -107,11 +112,13 @@ namespace ComputerBuilderMvcApp.Controllers
             return View(viewModel);
         }
 
+        // Processes the order after checkout.
+        // Validates the shipping address and cart, creates the order, and saves it to the database.
+        // If successful, clears the cart and redirects to the order confirmation page.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessOrder(CheckoutViewModel model)
         {
-
             if (!_signInManager.IsSignedIn(User)) 
             {
                 return Challenge(); 
@@ -199,6 +206,7 @@ namespace ComputerBuilderMvcApp.Controllers
             return RedirectToAction("OrderConfirmation", new { id = orderId.ToString() });
         }
 
+        // Displays the order confirmation page after a successful order.
         public IActionResult OrderConfirmation(string id)
         {
             ViewBag.OrderId = id;

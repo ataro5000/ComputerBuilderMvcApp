@@ -1,4 +1,13 @@
-﻿@page
+﻿@*
+------------------------------------------------------------------------------
+Email.cshtml
+This Razor Page provides the UI for managing a user's email address. It displays
+the current email, allows users to request a verification email, and provides a
+form to change to a new email address. Validation errors are shown as needed.
+------------------------------------------------------------------------------
+*@
+
+@page
 @model EmailModel
 @{
     ViewData["Title"] = "Manage Email";
@@ -30,12 +39,13 @@
                 </div>
             }
             <div class="form-floating mb-3">
+                @* Input field for the user's new email address *@
                 <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
                 <label asp-for="Input.NewEmail" class="form-label"></label>
                 <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
+            @* Button to submit the email change request *@
             <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg button-primary">Change email</button>
         </form>
     </div>
 </div>
-

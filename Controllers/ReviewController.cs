@@ -9,8 +9,11 @@ namespace ComputerBuilderMvcApp.Controllers
 {
     public class ReviewController(ApplicationDbContext context) : Controller
     {
-         private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context = context;
 
+        // Handles POST requests to add a new review for a component.
+        // Validates the review, checks if the component exists, and saves the review to the database.
+        // Redirects to the component details page after submission.
         [HttpPost]
         public async Task<IActionResult> AddComponentReview(Review reviewViewModel)
         {

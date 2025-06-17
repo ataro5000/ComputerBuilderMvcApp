@@ -12,25 +12,26 @@ namespace ComputerBuilderMvcApp.Controllers
         private readonly IComponentService _componentService = componentService;
         private readonly ILogger<HomeController> _logger = logger;
         
+        // Displays the home page with featured components.
         public async Task<IActionResult> Index(List<string> categories)
         {
             var featuredComponents = await _componentService.GetFeaturedComponentsAsync(4, categories);
             return View(featuredComponents);
         }
 
-
+        // Displays the contact page.
         public IActionResult Contact()
         {
             return View();
         }
 
-
+        // Displays the feedback form page.
         public IActionResult Feedback()
         {
             return View();
         }
 
-
+        // Displays the thank you page after feedback submission.
         public IActionResult FeedbackThanks()
         {
             return View();
@@ -59,4 +60,3 @@ namespace ComputerBuilderMvcApp.Controllers
         }
     }
 }
-

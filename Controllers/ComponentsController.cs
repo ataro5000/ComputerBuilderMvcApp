@@ -1,5 +1,6 @@
 // This file defines the ComponentsController class, which is responsible for handling requests related to computer components.
 // It loads component data and their reviews from JSON files and provides them to the views.
+
 using Microsoft.AspNetCore.Mvc;
 using ComputerBuilderMvcApp.Models;
 using ComputerBuilderMvcApp.Data;
@@ -11,6 +12,8 @@ namespace ComputerBuilderMvcApp.Controllers
     {
         private readonly ApplicationDbContext _context = context;
 
+        // Displays a list of components, optionally filtered by categories.
+        // Loads associated reviews for each component.
         public async Task<IActionResult> Index(List<string> categories)
         {
             IQueryable<Component> query = _context.Component.Include(c => c.Reviews);
@@ -27,12 +30,11 @@ namespace ComputerBuilderMvcApp.Controllers
         }
 
         // Displays the details of a specific component.
-        // It loads the component by its ID and its associated reviews.
-        // Returns BadRequest if the ID is null or empty, or NotFound if the component doesn't exist.
+        // Loads the component by its ID and its associated reviews.
+        // Returns BadRequest if the ID is invalid, or NotFound if the component doesn't exist.
         public async Task<IActionResult> Details(int id)
         {
             if (id <= 0) return BadRequest("Component ID cannot be null or empty.");
-
 
             var component = await _context.Component
                 .Include(c => c.Reviews)
