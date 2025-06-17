@@ -1,57 +1,83 @@
 @{
     ViewData["Title"] = "Documentation - Ecommerce P4";
 }
+<!-- DISCLAIMER: The following documentation section describes the application as updated for server-side
+            data management using Entity Framework Core and a full back-end database. All references to hardcoded or 
+            client-side data storage are legacy and retained for historical context. The current implementation uses a
+            database for all product, customer, and order data, as well as customer and order management features. -->
 <div class="body-doc">
     <h1>Documentation for Ecommerce Part 4</h1>
+    <section class="documentation-section" id="disclaimer">
+        <div class=body-doc>
+            <h2 class="documentation-header">DISCLAIMER</h2>
+            <p class="doc-p">
+                The following documentation describes the application as updated for server-side
+                data management using Entity Framework Core and a back-end database using SQlite. All references to
+                hardcoded or
+                client-side data storage are legacy and retained for historical context. The current implementation uses
+                a
+                database for all product, customer, and order data, as well as customer and order management features.
+            </p>
+        </div>
+    </section>
+
     <section class="documentation-section" id="description">
-        <h2 class="documentation-header">1. Description</h2>
-        <p class="doc-p">
-            <b>Computer Builder MVC Application</b> is a web-based online store developed using ASP.NET Core MVC (C#),
-            HTML, CSS, and JavaScript. The application is inspired by leading e-commerce platforms such as BestBuy.ca
-            and Amazon.ca, with a focus on usability, modularity, and a realistic shopping experience.
-        </p>
-        <p class="doc-p">
-            The application allows customers to browse a catalog of computers, review and customize their configurations
-            by selecting from a variety of components (including RAM, hard drive, CPU, display, OS, and soundcard), and
-            see real-time price updates as they make changes. The store features a welcoming homepage, active navigation
-            menus, a contact page, and a feedback form, all styled for a modern and responsive user experience.
-        </p>
-        <p class="doc-p">Key features include:</p>
-        <ul>
-            <li><b>Storefront Experience:</b> Includes a store name, logo, and intuitive navigation menus for seamless
-                browsing.</li>
-            <li><b>Product Catalog:</b> Displays a list of computers and at least five types of components, with product
-                information hardcoded for this stage.</li>
-            <li><b>Customization:</b> Customers can select a base computer and customize its configuration by choosing
-                compatible components from dropdown lists.</li>
-            <li><b>Dynamic Pricing:</b> The total price updates instantly within the page as customers change
-                components, providing immediate feedback.</li>
-            <li><b>Cart and Summary:</b> After customization, users can add their build to the cart and view a detailed
-                summary of their selections and pricing.</li>
-            <li><b>Session Tracking:</b> Customer selections and cart contents are tracked using cookies, with no
-                database required at this stage.</li>
-            <li><b>Active Navigation:</b> All menus, links, and buttons are fully functional, ensuring a realistic and
-                interactive store environment.</li>
-            <li><b>Additional Pages:</b> Includes a contact page and a feedback form for customer engagement.</li>
-        </ul>
-        <p class="doc-p">
-            The application is designed to closely mimic the look and feel of real online stores, providing a solid
-            foundation for further development and enhancements in future project phases.
-        </p>
+        <div class="body-doc">
+
+            <h2 class="documentation-header">1. Description</h2>
+            <p class="doc-p">
+                <b>Computer Builder MVC Application</b> is a web-based online store developed using ASP.NET Core MVC
+                (C#),
+                HTML, CSS, and JavaScript. The application is inspired by leading e-commerce platforms such as
+                BestBuy.ca
+                and Amazon.ca, with a focus on usability, modularity, and a realistic shopping experience.
+            </p>
+            <p class="doc-p">
+                <b>New in this version:</b> The application now uses a full back-end database (via Entity Framework Core
+                and
+                <code>DbContext</code>) for all product, customer, and order data. All previously hardcoded data is now
+                stored and managed in the database. The system supports customer registration, authentication, password
+                recovery, and robust order management for registered users.
+            </p>
+            <p class="doc-p">Key features include:</p>
+            <ul>
+                <li><b>Storefront Experience:</b> Includes a store name, logo, and intuitive navigation menus for
+                    seamless
+                    browsing.</li>
+                <li><b>Product Catalog:</b> Displays a list of computers and at least five types of components, with all
+                    product and component information loaded from the database.</li>
+                <li><b>Customization:</b> Customers can select a base computer and customize its configuration by
+                    choosing
+                    components from dropdown lists.</li>
+                <li><b>Dynamic Pricing:</b> The total price updates instantly within the page as customers change
+                    components, providing immediate feedback.</li>
+                <li><b>Customer Management:</b> New customer registration, login/logout, and password changes are fully
+                    supported and database-driven.</li>
+                <li><b>Order Management:</b> Registered customers can view, edit, and delete their orders. All order
+                    details, including pricing and selected components, are saved in the database.</li>
+                <li><b>Session Tracking:</b> Cart contents are tracked using cookies or session for anonymous users, but
+                    all
+                    persistent data is now stored in the database for registered users.</li>
+                <li><b>Active Navigation:</b> All menus, links, and buttons are fully functional, ensuring a realistic
+                    and
+                    interactive store environment.</li>
+                <li><b>Additional Pages:</b> Includes a contact page and a feedback form for customer engagement.</li>
+            </ul>
+            <p class="doc-p">
+                The application is designed to closely mimic the look and feel of real online stores, providing a solid
+                foundation for further development and enhancements in future project phases.
+            </p>
     </section>
 
     <section class="documentation-section" id="Analysis-And-Design">
         <h2 class="documentation-header">2. Analysis and Design</h2>
 
         <h3 class="documentation-subheader">2.1 Research and Findings</h3>
-
         <p class="doc-p">
             The following analysis and design are based on a comparative study of leading e-commerce platforms
-            (BestBuy.ca,
-            Amazon.ca, Walmart.ca, MemoryExpress.com, etc.). This section documents the findings, translates them into
-            application
-            requirements, and presents the resulting design, including module responsibilities and a complete list of
-            required pages, some off which may or may not.
+            (BestBuy.ca, Amazon.ca, Walmart.ca, MemoryExpress.com, etc.). This section documents the findings,
+            translates them into application requirements, and presents the resulting design, including module
+            responsibilities and a complete list of required pages.
         </p>
         <p class="doc-p">
             To inform the design of this application, I studied the user interfaces and features of leading online
@@ -90,22 +116,27 @@
             <li>Allow browsing of pre-configured computers, selection of a base model, and customization of components.
             </li>
             <li>Enable review and finalization of configurations, with a checkout process.</li>
-            <li>Use a hardcoded product catalog with at least 5 computers and 6 component types (RAM, HDD, CPU, GPU,
-                PSU, Motherboard, Cooling).</li>
+            <li>Store all product catalog data (computers and components) in a back-end database, replacing all
+                hardcoded or JSON-based data.</li>
             <li>Display product details including id, image, price, name, and rating. Components have type, spec, and
                 price.</li>
             <li>Support pre-configured builds and allow users to swap components as desired.</li>
             <li>Include required pages: contacts, feedback, splash (home), checkout, and detailed listings for each
                 type.</li>
-            <li>Implement cart persistence using cookies or localStorage (no database at this stage).</li>
+            <li>Implement cart persistence using cookies or session for anonymous users, but use the database for all
+                registered user data.</li>
             <li>All features should be accessible via active navigation links and buttons.</li>
             <li>Many features are implemented with JavaScript for dynamic updates (e.g., price calculation), while C#
-                handles server-side logic.</li>
+                and Entity Framework Core handle server-side logic and data access.</li>
             <li>Assume all components are compatible for simplicity.</li>
+            <li><b>Customer Management:</b> Provide registration, authentication, and password recovery, with all
+                customer data managed in the database.</li>
+            <li><b>Order Management:</b> Allow registered customers to view, edit, and delete their orders. All order
+                details, including pricing and selected components, are saved and managed in the database.</li>
         </ul>
         <p class="doc-p">
-            The design also considers future extensibility, such as adding more component types or integrating a
-            database.
+            The design also considers future extensibility, such as adding more component types, supporting more
+            advanced customer features, or integrating additional payment and shipping modules.
         </p>
 
         <h3 class="documentation-subheader">2.3 Application Design</h3>
@@ -114,55 +145,121 @@
         </p>
         <ul>
             <li><b>Component Modeling:</b> All components are represented by a single class with fields for type, spec,
-                and price. Inheritance was considered but simplified for rapid prototyping.</li>
-            <li><b>Data Storage:</b> Product and component data are hardcoded in C# or loaded from a single JSON file
-                for maintainability.</li>
-            <li><b>Pre-configured Builds:</b> Each computer has a list of standard components, which can be swapped by
-                the user. Types such as "PC" or "Laptop" are tracked via a type field.</li>
-            <li><b>Cart and State:</b> Cart items and selections are stored in cookies or localStorage, allowing users
-                to return and continue their build.</li>
+                and price. Inheritance was considered but simplified for maintainability and database mapping.</li>
+            <li><b>Data Storage:</b> All product, component, customer, and order data is stored and managed in a SQL
+                database via Entity Framework Core. No hardcoded or JSON-based data is used in the current version.</li>
+            <li><b>Cart and State:</b> Cart items and selections are stored in cookies or session for anonymous users,
+                but all persistent data for registered users is managed in the database.</li>
+            <li><b>Customer Management:</b> Registration, authentication, and password recovery are implemented using
+                secure, database-backed modules.</li>
+            <li><b>Order Management:</b> Orders are saved in the database, and registered customers can view, edit, or
+                delete their orders through a dedicated interface.</li>
             <li><b>Page Structure:</b> The site includes a splash/home page, component list, component details, cart
-                (shown on the right side for ongoing price), checkout, order confirmation, contact, and feedback pages.
-            </li>
+                (shown on the right side for ongoing price), checkout, order confirmation, contact, feedback, and
+                customer/order management pages.</li>
         </ul>
         <p class="doc-p">
-            <b>Sample Data Structure:</b>
+            <b>Data Structure (Database-Backed):</b>
         <pre>
-public class Computer {
-  public int ID { get; set; }
-  public string Name { get; set; }
-  public decimal TotalPrice { get; set; }
-  public List&lt;Component&gt; StandardComponents { get; set; }
+public class AspNetUserClaim
+{
+    public int Id { get; set; }
+    public string UserId { get; set; }
+    public string? ClaimType { get; set; }
+    public string? ClaimValue { get; set; }
 }
-public class Component {
-  public string Type { get; set; }
-  public string Spec { get; set; }
-  public decimal Price { get; set; }
+
+public class AspNetUserLogin
+{
+    public string LoginProvider { get; set; }
+    public string ProviderKey { get; set; }
+    public string? ProviderDisplayName { get; set; }
+    public string UserId { get; set; }
+}
+
+public class AspNetUserRole
+{
+    public string UserId { get; set; }
+    public string RoleId { get; set; }
+}
+
+public class AspNetUser
+{
+    public string Id { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Address { get; set; }
+    public string? City { get; set; }
+    public string? Province { get; set; }
+    public string? PostalCode { get; set; }
+    public string? Country { get; set; }
+    public string? UserName { get; set; }
+    public string? NormalizedUserName { get; set; }
+    public string? Email { get; set; }
+    public string? NormalizedEmail { get; set; }
+    public bool EmailConfirmed { get; set; }
+    public string? PasswordHash { get; set; }
+    public string? SecurityStamp { get; set; }
+    public string? ConcurrencyStamp { get; set; }
+    public string? PhoneNumber { get; set; }
+    public bool PhoneNumberConfirmed { get; set; }
+    public bool TwoFactorEnabled { get; set; }
+    public DateTimeOffset? LockoutEnd { get; set; }
+    public bool LockoutEnabled { get; set; }
+    public int AccessFailedCount { get; set; }
+}
+
+public class AspNetUserToken
+{
+    public string UserId { get; set; }
+    public string LoginProvider { get; set; }
+    public string Name { get; set; }
+    public string? Value { get; set; }
+}
+
+public class Component
+{
+    public int Id { get; set; }
+    public string? Image { get; set; }
+    public string? Name { get; set; }
+    public int PriceCents { get; set; }
+    public string? Spec { get; set; }
+    public string? Type { get; set; }
+}
+
+public class OrderItem
+{
+    public int OrderItemId { get; set; }
+    public int OrderId { get; set; }
+    public int ComponentId { get; set; }
+    public int Quantity { get; set; }
+    public int UnitPrice { get; set; }
+}
+
+public class Order
+{
+    public int OrderId { get; set; }
+    public string CustomerId { get; set; }
+    public DateTime OrderDate { get; set; }
+    public int TotalAmount { get; set; }
+    public string ShippingAddress { get; set; }
+    public int Status { get; set; }
+}
+
+public class Review
+{
+    public int Id { get; set; }
+    public string? Comments { get; set; }
+    public string? CustomerName { get; set; }
+    public int ItemId { get; set; }
+    public int Rating { get; set; }
+    public DateTime ReviewDate { get; set; }
 }
         </pre>
-        Data is initialized in-memory or loaded from JSON for rapid prototyping.
+        All data is managed through Entity Framework Core and persisted in the database.
         </p>
-
-        <h3 class="documentation-subheader">2.4 Interface Sketches and Page List</h3>
-        <ul>
-            <li><b>Home/Splash Page:</b> Store branding, welcome message, featured items.</li>
-            <li><b>Component List:</b> Grid/list of computers and components.</li>
-            <li><b>Component Details:</b> Detailed specs, customization options, dynamic price updates.</li>
-            <li><b>Cart:</b> Persistent cart summary (e.g., sidebar), showing selected items and running total.</li>
-            <li><b>Checkout:</b> Review and finalize configuration, proceed to order confirmation.</li>
-            <li><b>Order Confirmation:</b> Display order summary after checkout.</li>
-            <li><b>Contact Page:</b> Form for customer inquiries.</li>
-            <li><b>Feedback Page:</b> Form for user comments and suggestions.</li>
-            <li><b>About/Documentation Page:</b> Project documentation and user guide.</li>
-        </ul>
-        <img src="/images/documentation/chickenscratch.jpg" alt="handnotes2"><br>
-
-        <img src="/images/documentation/chickenscratch2.jpg" alt="handnotes2">
-        <p class="doc-p">
-            <b>Navigation Flow Example:</b><br />
-            Home → Component List → Component Details → Cart (sidebar) → Checkout → Order Confirmation<br />
-            All pages accessible via navigation menu; Contact and Feedback available from any page.
-        </p>
+        <img src="~/images/documentation/tables.jpg" alt="Database Tables Diagram"
+            style="max-width:100%;height:auto;" />
     </section>
 
     <section class="documentation-section" id="Implementation">
@@ -170,135 +267,78 @@ public class Component {
 
         <h3 class="documentation-subheader">3.1 Application Structure Overview</h3>
         <ul>
-            <li><b>Entry Point & Configuration (<code>Program.cs</code>):</b> Sets up the web server, configures MVC,
-                session state, and static file serving. Registers services like the Cart and session management. The
-                HTTP request pipeline is defined here, including routing and middleware order.</li>
+            <li><b>Entry Point & Configuration (<code>Program.cs</code>):</b> Configures the web server, MVC, session
+                state, static file serving, and registers services such as the Cart and database context. Sets up the
+                HTTP request pipeline, routing, and middleware order.</li>
             <li><b>Controllers (<code>Controllers/</code>):</b> Handle incoming web requests, interact with models and
-                services, and select views to render. Examples: <code>HomeController</code>,
-                <code>ComputersController</code>, <code>ComponentsController</code>, <code>CartController</code>.
-                Controllers fetch data from models or JSON files, inject services (like Cart), and return views with
-                data.
+                services, and select views to render. Includes controllers for computers, components, cart, customer
+                management (registration, login, password recovery), and order management (view, edit, delete orders).
             </li>
-            <li><b>Models (<code>Models/</code>):</b> Represent the application's data entities (e.g.,
-                <code>Computer</code>, <code>Component</code>, <code>Cart</code>, <code>CartItem</code>). Models
-                encapsulate business logic and structure for computers, components, and cart operations.
+            <li><b>Models (<code>Models/</code>):</b> Represent the application's data entities, such as
+                <code>Computer</code>, <code>Component</code>, <code>Customer</code>, <code>Order</code>, and
+                <code>OrderItem</code>. Models encapsulate business logic and structure for all store data.
             </li>
             <li><b>ViewModels (<code>ViewModels/</code>):</b> Shape and combine data for specific views, often
-                aggregating multiple models. Used to pass tailored data from controllers to views (e.g.,
-                <code>ComputerViewModel</code>, <code>CustomizeComputerViewModel</code>).
+                aggregating multiple models (e.g., <code>CustomizeComputerViewModel</code>,
+                <code>OrderDetailsViewModel</code>).
             </li>
             <li><b>Views (<code>Views/</code>):</b> Razor <code>.cshtml</code> files define the HTML structure and
                 presentation. Organized by controller and action. Shared layout and error pages are in
-                <code>Views/Shared/</code>. Views use the <code>@@model</code> directive to receive data from
-                controllers.
+                <code>Views/Shared/</code>.
             </li>
-            <li><b>Data Storage (<code>Data/</code>):</b> JSON files (e.g., <code>computers.json</code>,
-                <code>components.json</code>) act as a simple database. Controllers read these files to load product and
-                component data.
-            </li>
-            <li><b>Static Assets (<code>wwwroot/</code>):</b> Contains <code>site.css</code>, <code>site.js</code>,
-                images, and any client-side libraries. These are referenced in views for styling and interactivity.</li>
+            <li><b>Areas (<code>Areas/</code>):</b> Used to organize related functionality into separate sections of the
+                application, such as Identity for authentication and user management. Areas help keep large projects
+                organized by grouping controllers, views, and models for specific modules (like account management) into
+                their own folders. This makes it easier to maintain and extend features like login, registration, and
+                password recovery, and is required for ASP.NET Core Identity scaffolding.</li>
+            <li><b>Data Access (<code>Data/</code>):</b> Contains the Entity Framework Core <code>DbContext</code>
+                class, which manages all database access for products, components, customers, and orders. Database
+                migrations and seeding are handled here.</li>
+            <li><b>Static Assets (<code>wwwroot/</code>):</b> Contains CSS, JavaScript, images, and client-side
+                libraries for styling and interactivity.</li>
         </ul>
 
         <h3 class="documentation-subheader">3.2 Key Features Implementation</h3>
         <ul>
-            <li><b>Storefront and Navigation:</b> Uses a shared layout (<code>_Layout.cshtml</code>) for consistent
-                branding and navigation. Navigation links are implemented with Razor and HTML, ensuring all menus and
-                buttons are active and responsive.</li>
-            <li><b>Product Catalog:</b> Catalog data is hardcoded in C# model classes or loaded from JSON files. The
-                <code>CatalogController</code> retrieves and passes this data to views for display.
+            <li><b>Database Integration:</b> All product, component, customer, and order data is stored and managed in a
+                SQL database using Entity Framework Core. The <code>DbContext</code> is configured in
+                <code>Program.cs</code> and injected into controllers.
             </li>
-            <li><b>Customization:</b> Users can select a base computer and customize its configuration by choosing from
-                dropdowns of compatible components. JavaScript updates the total price dynamically as selections change,
-                without page reloads.</li>
-            <li><b>Cart and Summary:</b> Customized builds are added to the cart, with selections stored in cookies or
-                session. The cart summary page displays all selected components and the total price.</li>
-            <li><b>Session Tracking:</b> Customer selections and cart contents are tracked using cookies or session
-                state. No database is used at this stage.</li>
-            <li><b>Contact and Feedback:</b> Dedicated pages with forms for customer inquiries and feedback, validated
-                both client-side and server-side.</li>
-            <li><b>Responsive Design:</b> CSS and layout techniques ensure usability on both desktop and mobile devices.
-            </li>
+            <li><b>Customer Management:</b> Registration, authentication, and password recovery are implemented using
+                secure, database-backed modules. Passwords are hashed and stored securely. Customers can register, log
+                in, and reset forgotten passwords via email verification.</li>
+            <li><b>Order Management:</b> Registered customers can view, edit, and delete their orders. When an order is
+                submitted, all details (including selected components and pricing) are saved in the database and
+                displayed in a confirmation view. Customers can manage their order history through a dedicated
+                interface.</li>
+            <li><b>Product Catalog & Customization:</b> Catalog data is loaded from the database. Users can browse
+                computers, view details, and customize builds by selecting compatible components. The total price
+                updates dynamically as selections change.</li>
+            <li><b>Cart & Session State:</b> For anonymous users, cart contents are tracked using cookies or session.
+                For registered users, cart and order data are persisted in the database. Cart management logic ensures a
+                seamless experience across sessions and logins.</li>
+            <li><b>Navigation & Pages:</b> The site includes all required pages: splash/home, component list, component
+                details, cart, checkout, order confirmation, contact, feedback, and customer/order management. All
+                navigation links and buttons are active and functional.</li>
+            <li><b>Dynamic Updates:</b> JavaScript is used for real-time price calculation and UI updates during
+                customization and checkout.</li>
+            <li><b>Security:</b> User authentication, authorization, and input validation are enforced throughout the
+                application. Sensitive operations (like order management) require the user to be logged in.</li>
         </ul>
 
-        <h3 class="documentation-subheader">3.3 File Structure & Responsibilities</h3>
-        <table class="doc-file-table">
-            <tr>
-                <th>File/Folder</th>
-                <th>Location</th>
-                <th>Responsibilities</th>
-            </tr>
-            <tr>
-                <td><code>Program.cs</code></td>
-                <td>ComputerBuilderMvcApp/</td>
-                <td>Configures services, middleware, and routing. Sets up MVC, session, and static file serving.</td>
-            </tr>
-            <tr>
-                <td><code>Controllers/</code></td>
-                <td>ComputerBuilderMvcApp/Controllers/</td>
-                <td>Handles HTTP requests, business logic, and data passing between models and views (e.g.,
-                    <code>HomeController</code>, <code>CatalogController</code>, <code>CartController</code>).
-                </td>
-            </tr>
-            <tr>
-                <td><code>Models/</code></td>
-                <td>ComputerBuilderMvcApp/Models/</td>
-                <td>Defines C# classes for computers, components, cart items, and business logic.</td>
-            </tr>
-            <tr>
-                <td><code>ViewModels/</code></td>
-                <td>ComputerBuilderMvcApp/ViewModels/</td>
-                <td>Shapes and aggregates data for specific views (e.g., <code>CustomizeComputerViewModel</code>).</td>
-            </tr>
-            <tr>
-                <td><code>Views/</code></td>
-                <td>ComputerBuilderMvcApp/Views/</td>
-                <td>Contains Razor views for each page (e.g., Home, Catalog, Product Details, Cart, Contact, Feedback,
-                    Documentation).</td>
-            </tr>
-            <tr>
-                <td><code>Views/Shared/_Layout.cshtml</code></td>
-                <td>ComputerBuilderMvcApp/Views/Shared/</td>
-                <td>Defines the common layout, navigation, and branding for all pages.</td>
-            </tr>
-            <tr>
-                <td><code>Data/</code></td>
-                <td>ComputerBuilderMvcApp/Data/</td>
-                <td>Holds JSON files for products and components, acting as a simple database.</td>
-            </tr>
-            <tr>
-                <td><code>wwwroot/css/site.css</code></td>
-                <td>ComputerBuilderMvcApp/wwwroot/css/</td>
-                <td>Custom CSS for responsive and modern styling.</td>
-            </tr>
-            <tr>
-                <td><code>wwwroot/js/site.js</code></td>
-                <td>ComputerBuilderMvcApp/wwwroot/js/</td>
-                <td>JavaScript for dynamic price updates and interactive UI elements.</td>
-            </tr>
-            <tr>
-                <td><code>appsettings.json</code></td>
-                <td>ComputerBuilderMvcApp/</td>
-                <td>Application configuration (not used for product data at this stage).</td>
-            </tr>
-        </table>
-
-        <h3 class="documentation-subheader">3.4 Notable Implementation Details</h3>
+        <h3 class="documentation-subheader">3.3 Notable Implementation Details</h3>
         <ul>
-            <li><b>Dynamic Price Calculation:</b> JavaScript event listeners detect changes in component selections and
-                recalculate the total price in real time, updating the UI without a page reload.</li>
-            <li><b>Cookie/Session Management:</b> Cart and customization data are serialized as JSON and stored in
-                browser cookies or session. On each relevant page load, the application reads and deserializes this data
-                to restore the user's selections.</li>
-            <li><b>Form Validation:</b> Both client-side (JavaScript/HTML5) and server-side (C#) validation are used for
-                contact and feedback forms to ensure data integrity.</li>
+            <li><b>Entity Framework Core:</b> Used for all data access, migrations, and database schema management.
+                Models are mapped to database tables, and relationships (such as orders and order items) are defined
+                using navigation properties.</li>
             <li><b>Separation of Concerns:</b> The MVC pattern is strictly followed, with controllers handling logic,
                 models representing data, and views managing presentation.</li>
-            <li><b>Extensibility:</b> The codebase is organized to allow easy addition of new products, components, or
-                features in future phases. Adding a new feature (like computer customization) involves updating the
-                controller, view model, view, and possibly the data files.</li>
-            <li><b>Debugging:</b> Use breakpoints in C# code, Console.WriteLine/logging for server-side tracing, and
-                browser developer tools for client-side debugging.</li>
+            <li><b>Extensibility:</b> The codebase is organized to allow easy addition of new features, such as more
+                component types, advanced customer features, or additional payment and shipping modules.</li>
+            <li><b>Validation:</b> Both client-side and server-side validation are implemented for forms (registration,
+                login, feedback, etc.) to ensure data integrity and security.</li>
+            <li><b>Responsive Design:</b> CSS and layout techniques ensure usability on both desktop and mobile devices.
+            </li>
         </ul>
     </section>
 
@@ -312,25 +352,35 @@ public class Component {
             <li>Navigate to the homepage to view the store branding, welcome message, and navigation menu.</li>
             <li>Use the navigation menu to browse the catalog of available computers and components.</li>
             <li>Select a computer to view its details and begin customization.</li>
-            <li>Choose your preferred components (RAM, hard drive, CPU, etc.) from the dropdown
-                lists. The total price will update automatically as you make changes.</li>
+            <li>Choose your preferred components (RAM, hard drive, CPU, etc.) from the dropdown lists. The total price
+                will update automatically as you make changes.</li>
             <li>Once satisfied, click the "Add to Cart" button to save your customized build.</li>
             <li>Go to the Cart page to review your selections and see a summary of your configuration and pricing.</li>
+            <li>If you are a new user, register for an account to enable order management and persistent cart storage.
+            </li>
+            <li>Log in to your account to access order history, manage your orders, and use password recovery if needed.
+            </li>
+            <li>Proceed to checkout to finalize your order. Registered users will have their order details saved in the
+                database and can view, edit, or delete orders later.</li>
             <li>Use the Contact or Feedback pages to reach out or provide comments if needed.</li>
         </ol>
 
         <h3 class="documentation-subheader">4.2 Features Overview</h3>
         <ul>
             <li><b>Storefront Navigation:</b> Access all main pages (Home, Catalog, Cart, Contact, Feedback,
-                Documentation) from the top navigation menu.</li>
+                Documentation, Account, Orders) from the top/bottom navigation menu.</li>
             <li><b>Product Catalog:</b> Browse a list of computers and components, each with detailed information and
-                pricing.</li>
+                pricing, all loaded from the database.</li>
             <li><b>Customization:</b> Select and swap compatible components for each computer, with real-time price
                 updates.</li>
             <li><b>Cart Summary:</b> View a detailed summary of your customized build and total price before checkout.
             </li>
-            <li><b>Session Tracking:</b> Your selections and cart are saved using cookies, so you can return and
-                continue where you left off (unless cookies are cleared).</li>
+            <li><b>Session Tracking:</b> For anonymous users, selections and cart are saved using cookies or session.
+                For registered users, cart and order data are persisted in the database.</li>
+            <li><b>Customer Management:</b> Register, log in, and recover your password securely. All customer data is
+                managed in the database.</li>
+            <li><b>Order Management:</b> Registered users can view, edit, and delete their orders. Order details,
+                including selected components and pricing, are saved and managed in the database.</li>
             <li><b>Contact & Feedback:</b> Submit questions or feedback through dedicated forms, with validation for
                 required fields.</li>
             <li><b>Responsive Design:</b> The site is usable on both desktop and mobile devices.</li>
@@ -338,108 +388,118 @@ public class Component {
 
         <h3 class="documentation-subheader">4.3 Notes for Users</h3>
         <ul>
-            <li>If you clear your browser cookies, your cart and selections will be reset.</li>
-            <li>All customization and cart data is stored locally in your browser; no personal data is sent to a server
-                or database at this stage.</li>
+            <li>If you clear your browser cookies, your cart and selections will be reset (for anonymous users).</li>
+            <li>Registered users benefit from persistent cart and order management, even across devices.</li>
             <li>All navigation links and buttons are active and functional.</li>
             <li>For best experience, use a modern browser (Chrome, Edge, Firefox, Safari).</li>
             <li>Contact and feedback forms require all fields to be filled out before submission.</li>
+            <li>For password recovery, follow the instructions sent to your registered email address.</li>
         </ul>
     </section>
 
     <section class="documentation-section" id="Links">
         <h2 class="documentation-header">5. Links</h2>
-        <p class="doc-p">5.1 <a
-                href="https://learn.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-8.0">ASP.NET Core MVC
-                Overview</a> – Official Microsoft documentation for ASP.NET Core MVC, covering controllers, views, and
-            models.</p>
-        <p class="doc-p">5.2 <a href="https://learn.microsoft.com/en-us/dotnet/csharp/">C# Documentation</a> –
-            Comprehensive guide to the C# language and .NET features.</p>
+        <p class="doc-p">5.1 <a href="https://learn.microsoft.com/en-us/ef/core/">Entity Framework Core
+                Documentation</a> - Official Microsoft documentation for Entity Framework Core, including setup, usage,
+            and advanced features.</p>
+        <p class="doc-p">5.2 <a href="https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/">Configuring a
+                DbContext</a> - How to configure and use <code>DbContext</code> in Entity Framework Core.</p>
         <p class="doc-p">5.3 <a
-                href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/cookies?view=aspnetcore-8.0">Working
-                with Cookies in ASP.NET Core</a> – How to use cookies for session and state management.</p>
-        <p class="doc-p">5.4 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide">MDN JavaScript
-                Guide</a> – In-depth JavaScript reference and tutorials for dynamic web features.</p>
-        <p class="doc-p">5.5 <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">Bootstrap
-                Documentation</a> – For responsive and modern CSS layouts (if Bootstrap is used).</p>
-        <p class="doc-p">5.6 <a href="https://www.w3schools.com/html/">W3Schools HTML Reference</a> – Quick reference
-            for HTML elements and attributes.</p>
-        <p class="doc-p">5.7 <a href="https://validator.w3.org/">W3C HTML Validator</a> – Tool to validate HTML for
-            standards compliance.</p>
-        <p class="doc-p">5.8 <a href="https://www.bestbuy.ca/">BestBuy.ca</a> – Example of a real-world online
-            electronics store.</p>
-        <p class="doc-p">5.9 <a href="https://www.amazon.ca/">Amazon.ca</a> – Example of a large-scale e-commerce
-            platform.</p>
+                href="https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/">Scaffolding a DbContext
+                and Models</a> - Guide to scaffolding your database context and models from an existing database.</p>
+        <p class="doc-p">5.4 <a
+                href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-8.0&tabs=visual-studio">Scaffold
+                Identity in ASP.NET Core Projects</a> - Step-by-step tutorial for scaffolding login, registration, and
+            authentication features.</p>
+        <p class="doc-p">5.5 <a
+                href="https://learn.microsoft.com/en-us/ef/core/providers/sqlite/?tabs=dotnet-core-cli">Using SQLite
+                with Entity Framework Core</a> - How to use SQLite as the database provider for your ASP.NET Core
+            application.</p>
+        <p class="doc-p">5.6 <a
+                href="https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/intro?view=aspnetcore-8.0">Getting
+                Started with EF Core in ASP.NET Core MVC</a> - Complete walkthrough for integrating EF Core with MVC
+            projects.</p>
+        <p class="doc-p">5.7 <a
+                href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0">ASP.NET
+                Core Identity Overview</a> - Overview of authentication, registration, and password recovery in ASP.NET
+            Core.</p>
+        <p class="doc-p">5.8 <a href="https://www.sqlitetutorial.net/">SQLite Tutorial</a> - General SQLite usage and
+            SQL syntax reference.</p>
+        <p class="doc-p">5.9 <a
+                href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0">Dependency
+                Injection in ASP.NET Core</a> - How services like <code>DbContext</code> are injected into controllers.
+        </p>
         <p class="doc-p">5.10 <a
-                href="https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-8.0">Razor Pages
-                Documentation</a> – For understanding Razor syntax and page structure.</p>
+                href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/passwords?view=aspnetcore-8.0">Password
+                Storage and Security</a> - Best practices for storing and managing user passwords securely.</p>
     </section>
 
     <section class="documentation-section" id="Notes">
         <h2 class="documentation-header">6. Notes</h2>
 
         <h3 class="documentation-subheader">6.1 General Notes/Lessons Learned</h3>
-        <h4>6.1.1 Reflections from Design to Deployment</h4>
+        <h4>6.1.2 New Situations and Surprises in Part 4</h4>
         <ol>
-            <li><strong>Underestimating the Planning Phase</strong>
+            <li><strong>Database Migrations Gone Wrong</strong>
                 <ul>
-                    <li>At first, I jumped straight into coding without fully mapping out the site structure or user
-                        flow. This led to confusion later when I realized some required pages and navigation links were
-                        missing. I learned that spending more time on sketches and flowcharts up front saves a lot of
-                        rework time. I am not exagerating when I say that I was starting to dream in learn.microsoft.com 
-                        formating, this was a Bible for this assignment, questions answered.
-                        </li>
+                    <li>I thought running <code>dotnet ef migrations add</code> would be a quick step, but I
+                        accidentally left a typo in one of my model properties. The migration failed, and I spent an
+                        hour trying to figure out why. Lesson learned: always double-check your models before running
+                        migrations, and don't be afraid to delete and recreate migrations if you mess up early on.</li>
                 </ul>
             </li>
-            <li><strong>Component Modeling Overcomplication</strong>
+            <li><strong>Identity Scaffolding Confusion</strong>
                 <ul>
-                    <li>I initially tried to use inheritance for every component type (RAM, CPU, etc.), but it made the
-                        codebase unnecessarily complex for this stage. After reviewing the assignment requirements, I
-                        simplified everything to a single Component class with a type field, which made customization
-                        and data loading much easier. I had a lot of iterations at the beginning as this part seemed a 
-                        bit of a step up from all other parts. 
-                        </li>
+                    <li>I tried to scaffold Identity for login and registration, but Visual Studio kept throwing errors
+                        about missing dependencies. Turns out, I hadn't installed the right NuGet packages. After some
+                        trial and error (and a lot of Googling), I got it working. Now I know to always check the docs
+                        for required packages before scaffolding anything.</li>
                 </ul>
             </li>
-            <li><strong>Hardcoding vs. Data Files</strong>
+            <li><strong>SQLite Locking Issues</strong>
                 <ul>
-                    <li>My first version had all product data hardcoded in C# classes. When I wanted to add more
-                        computers, it became tedious. Switching to JSON files for data storage made it much easier to
-                        update and test different configurations.</li>
+                    <li>While testing with SQLite, I kept getting “database is locked” errors when running multiple
+                        requests quickly. I didn't realize SQLite has limitations with concurrent writes. I had to
+                        adjust my testing habits and make sure I wasn't running multiple instances at once. It made me
+                        appreciate why production apps use SQL Server or PostgreSQL instead.</li>
                 </ul>
             </li>
-            <li><strong>Session and Cookie Confusion</strong>
+            <li><strong>Seed Data Not Updating</strong>
                 <ul>
-                    <li>I misunderstood how cookies and session state worked in ASP.NET Core(again). At first, cart data was
-                        lost between page reloads. After reading the docs and experimenting a bit, I learned to serialize cart
-                        data as JSON and store it in cookies, which fixed persistence issues. Sigh.</li>
+                    <li>I updated my seed data, but the changes didn't show up in the app. I eventually realized that
+                        once the database is created, changes to the seed method don't apply unless you drop and
+                        recreate the database or use a migration. This tripped me up a few times before I got the hang
+                        of it.</li>
                 </ul>
             </li>
-
-            <li><strong>Testing on Different Browsers</strong>
+            <li><strong>Forgotten Navigation Links</strong>
                 <ul>
-                    <li>I only tested in Chrome(Brave) at first. When I tried Edge and Firefox, I noticed some layout and
-                        cookie persistence differences. It still throws me off guard when I see this.</li>
+                    <li>After adding new pages for order management, I forgot to update the navigation bar. I only
+                        noticed when I tried to access the page and couldn't find the link. Now I keep a checklist of
+                        all places that need updating whenever I add a new feature.</li>
                 </ul>
             </li>
-            <li><strong>Azure Deployment Surprises</strong>
+            <li><strong>Session State Surprises</strong>
                 <ul>
-                    <li>When I uploaded the project to Azure, I ran into issues with static file serving and session
-                        state not persisting. I realized I needed to double-check my <code>Program.cs</code>
-                        configuration and ensure <code>app.UseStaticFiles()</code> and <code>app.UseSession()</code>
-                        were in the correct order. Reading Azure deployment best practices helped resolve these issues.
-                    </li>
+                    <li>I assumed session state would “just work” for anonymous carts, but I missed a configuration step
+                        in <code>Program.cs</code>. The cart kept resetting between requests until I realized I needed
+                        to call <code>app.UseSession()</code> before <code>app.UseEndpoints()</code>. It's always the
+                        little things that trip you up!</li>
                 </ul>
             </li>
-            <li><strong>Documentation Value</strong>
+            <li><strong>Debugging Email Sending (SendGrid)</strong>
                 <ul>
-                    <li>Writing this documentation forced me to clarify my own understanding and spot gaps in my
-                        implementation. I now appreciate how good documentation can save time for both myself and anyone
-                        else who works on the project in the future. I know I have probably used this every documentation file
-                        this assingment but it really highlights how much it helps fromm day to day. Considering I worked on this
-                        fulltime for weeks, either pulling my hair out or just shouting eureka, writing down what I did and what worked 
-                        really helped me step my game up. Git helped tremendously with this task as well and should honestly be in the course,
-                        as this is a fundamental part of development.</li>
+                    <li>For password recovery, I used SendGrid to send emails. At first, nothing was arriving in my
+                        inbox, and I thought my code was broken. After double-checking my SendGrid API key and sender
+                        email, I realized I had forgotten to verify my sender identity in the SendGrid dashboard. Once I
+                        did that, emails started coming through. </li>
+                </ul>
+            </li>
+            <li><strong>Model Validation Misses</strong>
+                <ul>
+                    <li>I forgot to add validation attributes to some of my ViewModels. Users could submit empty forms,
+                        which broke things on the server. After adding <code>[Required]</code> and other attributes, the
+                        forms worked as expected. It's a good reminder to always test forms with bad input!</li>
                 </ul>
             </li>
         </ol>
